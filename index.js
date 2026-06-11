@@ -1,9 +1,9 @@
-import { setExtensionPrompt, extension_prompt_types, eventSource, event_types, getContext } from '../../../../script.js';
+import { setExtensionPrompt, extension_prompt_types, eventSource, event_types } from '../../../../script.js';
 
 const extensionName = 'fetish-manager';
 
 const FETISHES = {
-    // ========== ORIGINAL FETISHES ==========
+    // ========== ОРИГИНАЛЬНЫЕ ФЕТИШИ ==========
     bdsm: { name: "БДСМ", icon: "fa-solid fa-link", cat: "power", prompt: `[FETISH: BDSM] {{char}} has interest in BDSM.` },
     domination: { name: "Доминация", icon: "fa-solid fa-crown", cat: "power", prompt: `[FETISH: Domination] {{char}} takes control.` },
     masochism: { name: "Мазохизм", icon: "fa-solid fa-fire", cat: "power", prompt: `[FETISH: Masochism] {{char}} enjoys pain.` },
@@ -35,7 +35,7 @@ const FETISHES = {
     dirty_talk: { name: "Грязные разговоры", icon: "fa-solid fa-comment-dots", cat: "rel", prompt: `[FETISH: Dirty Talk] {{char}} talks dirty.` },
     worship: { name: "Поклонение", icon: "fa-solid fa-hand-holding-heart", cat: "rel", prompt: `[FETISH: Worship] {{char}} worships partner.` },
 
-    // ========== FIRST BATCH OF NEW FETISHES ==========
+    // ========== НОВЫЕ ФЕТИШИ (ПЕРВАЯ ПАРТИЯ) ==========
     cuckold: { name: "Куколд", icon: "fa-solid fa-people-arrows", cat: "power", prompt: `[FETISH: Cuckold] {{char}} gets aroused by watching or knowing their partner has sex with someone else, feeling humiliation and pleasure.` },
     strength_fetish: { name: "Фетиш силы", icon: "fa-solid fa-hand-fist", cat: "power", prompt: `[FETISH: Strength] {{char}} is aroused by lifting and carrying their partner, or displaying physical power.` },
     abasiophilia: { name: "Абазиофилия", icon: "fa-solid fa-wheelchair", cat: "psych", prompt: `[FETISH: Abasiophilia] {{char}} is attracted to people with physical disabilities or those using orthopedic devices.` },
@@ -64,7 +64,7 @@ const FETISHES = {
     catsuit_fetish: { name: "Кэтсьют (костюм кошки)", icon: "fa-solid fa-cat", cat: "body", prompt: `[FETISH: Catsuit] {{char}} is aroused by wearing or seeing a catsuit (tight, often latex or leather full-body suit).` },
     smoking_fetish: { name: "Курительный фетишизм (капнолагния)", icon: "fa-solid fa-smoking", cat: "sense", prompt: `[FETISH: Smoking (Capnolagnia)] {{char}} gets aroused by watching someone smoke, or by the act of smoking itself.` },
 
-    // ========== SECOND BATCH ==========
+    // ========== ВТОРАЯ БОЛЬШАЯ ПАРТИЯ ==========
     chastity: { name: "Chastity (клетка/пояс)", icon: "fa-solid fa-lock", cat: "power", prompt: `[FETISH: Chastity] {{char}} is aroused by enforced chastity — wearing a chastity cage/belt, orgasm denial, and control over partner's sexual release.` },
     cfnm: { name: "CFNM (одетая женщина, голый мужчина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CFNM] {{char}} enjoys scenarios where women are fully clothed while men are naked, often with a power dynamic.` },
     cmnf: { name: "CMNF (одетый мужчина, голая женщина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CMNF] {{char}} is aroused by situations where men are clothed and women are naked, emphasizing vulnerability and exhibitionism.` },
@@ -135,42 +135,37 @@ const CATEGORIES = {
     rel: { name: "Отношения", icon: "fa-solid fa-heart-pulse" }
 };
 
-// === ДОБАВЛЕНЫ НОВЫЕ ПОЛЯ ДЛЯ ФИЛЬТРА КОНТЕКСТА ===
-let state = { 
-    enabled: true, 
-    active: [], 
-    intensity: 'medium', 
-    chance: 70, 
-    custom: [], 
+let state = {
+    enabled: true,
+    active: [],
+    intensity: 'medium',
+    chance: 70,
+    custom: [],
     showFloating: true,
-    // Фильтр контекста
-    minContextLength: 0,         // минимальная длина истории в символах (0 = отключено)
-    cooldownMessages: 0,         // сколько сообщений пропустить после срабатывания (0 = отключено)
-    requireSexualHint: false,    // требовать сексуальный намёк от пользователя
-    lastTriggerMessageId: null   // ID последнего сообщения, когда сработал фетиш
+    minContextLength: 0,
+    cooldownMessages: 0,
+    requireSexualHint: false,
+    lastTriggerMessageId: null
 };
 
 function load() { try { const s = localStorage.getItem('fm'); if(s) state = {...state, ...JSON.parse(s)}; } catch(e){} }
 function save() { localStorage.setItem('fm', JSON.stringify(state)); }
 
-// ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ФИЛЬТРА ==========
 function getChatHistoryLength() {
-    const ctx = getContext();
+    const ctx = window.getContext();
     if (!ctx || !ctx.chat || !ctx.chat.length) return 0;
-    // Суммируем длину всех сообщений (и пользователя, и бота)
     return ctx.chat.reduce((sum, msg) => sum + (msg.mes?.length || 0), 0);
 }
 
 function getLastMessageId() {
-    const ctx = getContext();
+    const ctx = window.getContext();
     if (!ctx || !ctx.chat) return 0;
-    return ctx.chat.length - 1; // индекс последнего сообщения
+    return ctx.chat.length - 1;
 }
 
 function hasUserSexualHint() {
-    const ctx = getContext();
+    const ctx = window.getContext();
     if (!ctx || !ctx.chat || ctx.chat.length === 0) return false;
-    
     let lastUserMsg = null;
     for (let i = ctx.chat.length - 1; i >= 0; i--) {
         if (ctx.chat[i].is_user) {
@@ -179,10 +174,9 @@ function hasUserSexualHint() {
         }
     }
     if (!lastUserMsg) return false;
-    
     const lowerMsg = lastUserMsg.toLowerCase();
     const sexualKeywords = [
-        "sex", "fuck", "cock", "pussy", "dick", "hard", "wet", "horny", 
+        "sex", "fuck", "cock", "pussy", "dick", "hard", "wet", "horny",
         "kiss", "touch", "naked", "undress", "bed", "moan", "orgasm",
         "erect", "throb", "pant", "grope", "spank", "bdsm", "fetish",
         "раздева", "голый", "возбужд", "траха", "член", "киска",
@@ -202,8 +196,6 @@ function isCooldownActive() {
 function buildPrompt() {
     if (!state.enabled || !state.active.length) return '';
 
-    // === ФИЛЬТР КОНТЕКСТА ===
-    // Проверка минимальной длины истории
     if (state.minContextLength > 0) {
         const historyLen = getChatHistoryLength();
         if (historyLen < state.minContextLength) {
@@ -211,19 +203,14 @@ function buildPrompt() {
             return '';
         }
     }
-    
-    // Проверка кулдауна
     if (isCooldownActive()) {
         console.log(`[Fetish Manager] Cooldown active, skipping`);
         return '';
     }
-    
-    // Проверка сексуального намёка (если включено)
     if (state.requireSexualHint && !hasUserSexualHint()) {
         console.log(`[Fetish Manager] No sexual hint in last user message, skipping`);
         return '';
     }
-    // === КОНЕЦ ФИЛЬТРА ===
 
     const intensityMap = {
         low: 'very subtle hints, barely noticeable',
@@ -244,11 +231,10 @@ function buildPrompt() {
     const randomFetishKey = state.active[Math.floor(Math.random() * state.active.length)];
     const randomFetish = FETISHES[randomFetishKey] || state.custom.find(f => f.id === randomFetishKey);
 
-    // Если фетиш сработал, запоминаем ID текущего сообщения (последнего в истории)
     if (triggered && state.cooldownMessages > 0) {
         const currentId = getLastMessageId();
         state.lastTriggerMessageId = currentId;
-        save(); // сохраняем сразу, чтобы кулдаун действовал на следующее сообщение
+        save();
     }
 
     let p = `[OOC: FETISH SYSTEM — STRICT COMPLIANCE REQUIRED]
@@ -353,7 +339,6 @@ function buildCategoriesHtml() {
     return html;
 }
 
-/* ── Extension panel settings HTML (inside #extensions_settings2) ── */
 const extSettingsHtml = `
 <div id="fm-ext-settings" class="fm-ext-block">
     <div class="inline-drawer">
@@ -379,7 +364,6 @@ const extSettingsHtml = `
 </div>
 `;
 
-/* ── Floating panel HTML (ДОБАВЛЕНЫ ЭЛЕМЕНТЫ ДЛЯ ФИЛЬТРА) ── */
 const panelHtml = `
 <div id="fm-panel" class="fm-container fm-hidden">
     <div class="fm-header">
@@ -401,7 +385,6 @@ const panelHtml = `
                 <span>Шанс: <b id="fm-chance-val">70</b>%</span>
                 <input type="range" id="fm-chance" min="10" max="100" value="70" step="10">
             </div>
-            <!-- НОВЫЕ НАСТРОЙКИ ФИЛЬТРА КОНТЕКСТА -->
             <div class="fm-row">
                 <span>Мин. длина истории (символов):</span>
                 <input type="number" id="fm-min-context" min="0" max="10000" step="100" value="0" style="width:70px">
@@ -447,9 +430,8 @@ jQuery(async () => {
         const $panel = $('#fm-panel');
         const $miniBtn = $('#fm-mini-btn');
 
-        /* ── Floating button visibility ── */
         function applyFloatVisibility() {
-            $miniBtn.toggle(!!state.showFloating);
+            if ($miniBtn.length) $miniBtn.toggle(!!state.showFloating);
         }
         $('#fm-ext-show-float').prop('checked', state.showFloating).on('change', function() {
             state.showFloating = this.checked;
@@ -458,13 +440,11 @@ jQuery(async () => {
         });
         applyFloatVisibility();
 
-        /* ── Open panel from extension settings ── */
         $('#fm-ext-open').on('click', function(e) {
             e.preventDefault();
             $panel.removeClass('fm-hidden');
         });
 
-        /* ── Floating mini button ── */
         let miniClickAllowed = true;
         $miniBtn.on('click touchend', function(e) {
             if (!miniClickAllowed) return;
@@ -478,7 +458,6 @@ jQuery(async () => {
             $panel.addClass('fm-hidden');
         });
 
-        /* ── Controls (основные) ── */
         $('#fm-enabled').prop('checked', state.enabled).on('change', function() {
             state.enabled = this.checked;
             apply();
@@ -500,7 +479,6 @@ jQuery(async () => {
             save();
         });
 
-        /* ── Новые обработчики фильтра контекста ── */
         $('#fm-min-context').val(state.minContextLength).on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
@@ -513,7 +491,6 @@ jQuery(async () => {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
             state.cooldownMessages = val;
-            // Если кулдаун выключен, сбрасываем lastTriggerMessageId
             if (val === 0) state.lastTriggerMessageId = null;
             apply();
             save();
@@ -525,7 +502,6 @@ jQuery(async () => {
             save();
         });
 
-        /* ── Fetish buttons ── */
         $(document).on('click touchend', '.fm-fetish-btn', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
@@ -545,15 +521,12 @@ jQuery(async () => {
             notify('Очищено');
         });
 
-        /* ── Custom fetishes ── */
         $('#fm-add-custom').on('click touchend', function(e) {
             e.preventDefault();
             const name = prompt('Название фетиша:');
             if (!name || !name.trim()) return;
-
             const desc = prompt('Описание для AI (например: {{char}} enjoys...):');
             if (!desc || !desc.trim()) return;
-
             const id = 'custom_' + Date.now();
             state.custom.push({
                 id,
@@ -584,7 +557,6 @@ jQuery(async () => {
             notify('Удалён');
         });
 
-        /* ── Drag: panel ── */
         const $handle = $('#fm-drag-handle');
         let isDragging = false;
         let offset = { x: 0, y: 0 };
@@ -615,7 +587,6 @@ jQuery(async () => {
             isDragging = false;
         });
 
-        /* ── Drag: mini button ── */
         let isMiniDragging = false;
         let miniOffset = { x: 0, y: 0 };
         let miniMoved = false;
