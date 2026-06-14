@@ -3,138 +3,208 @@ import { setExtensionPrompt, extension_prompt_types, eventSource, event_types } 
 const extensionName = 'fetish-manager';
 
 const FETISHES = {
-    // ========== ОРИГИНАЛЬНЫЕ ФЕТИШИ ==========
+    // ==================== ВЛАСТЬ И КОНТРОЛЬ (power) ====================
     bdsm: { name: "БДСМ", icon: "fa-solid fa-link", cat: "power", prompt: `[FETISH: BDSM] {{char}} has interest in BDSM.` },
     domination: { name: "Доминация", icon: "fa-solid fa-crown", cat: "power", prompt: `[FETISH: Domination] {{char}} takes control.` },
     masochism: { name: "Мазохизм", icon: "fa-solid fa-fire", cat: "power", prompt: `[FETISH: Masochism] {{char}} enjoys pain.` },
     bondage: { name: "Бондаж", icon: "fa-solid fa-hands-bound", cat: "power", prompt: `[FETISH: Bondage] {{char}} enjoys restraints.` },
     brat_taming: { name: "Приручение", icon: "fa-solid fa-bolt", cat: "power", prompt: `[FETISH: Brat Taming] {{char}} provokes punishment.` },
     freeuse: { name: "Freeuse", icon: "fa-solid fa-lock-open", cat: "power", prompt: `[FETISH: Free Use] {{char}} available anytime.` },
+    cuckold: { name: "Куколд", icon: "fa-solid fa-people-arrows", cat: "power", prompt: `[FETISH: Cuckold] {{char}} gets aroused by watching or knowing their partner has sex with someone else.` },
+    strength_fetish: { name: "Фетиш силы", icon: "fa-solid fa-hand-fist", cat: "power", prompt: `[FETISH: Strength] {{char}} is aroused by lifting/carrying their partner or displaying physical power.` },
+    chastity: { name: "Chastity (клетка/пояс)", icon: "fa-solid fa-lock", cat: "power", prompt: `[FETISH: Chastity] {{char}} is aroused by enforced chastity, orgasm denial, and control over partner's release.` },
+    cfnm: { name: "CFNM (одетая женщина, голый мужчина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CFNM] {{char}} enjoys scenarios where women are clothed while men are naked.` },
+    cmnf: { name: "CMNF (одетый мужчина, голая женщина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CMNF] {{char}} is aroused by situations where men are clothed and women are naked.` },
+    switch_role: { name: "Свитч (переключение ролей)", icon: "fa-solid fa-arrows-spin", cat: "power", prompt: `[FETISH: Switch] {{char}} enjoys both dominant and submissive roles, switching freely.` },
+
+    // ==================== ПСИХОЛОГИЧЕСКИЕ (psych) ====================
     humiliation: { name: "Унижение", icon: "fa-solid fa-face-flushed", cat: "psych", prompt: `[FETISH: Humiliation] {{char}} enjoys degradation.` },
     praise: { name: "Похвала", icon: "fa-solid fa-star", cat: "psych", prompt: `[FETISH: Praise] {{char}} loves praise.` },
-    money: { name: "Фин.Доминирование", icon: "fa-solid fa-money-bill-wave", cat: "psych", prompt: `[FETISH: Financial dominance] {{char}} derives profound sexual and psychological pleasure from financially dominating their partner, which includes the mandatory purchase of expensive gifts, jewelry, or property. They must insist on the partner accepting large sums of money or having full financial reliance on them. The act of "gifting" is a core element of sexual arousal and control` },
+    money: { name: "Фин.Доминирование", icon: "fa-solid fa-money-bill-wave", cat: "psych", prompt: `[FETISH: Financial dominance] {{char}} derives sexual pleasure from financially dominating their partner (expensive gifts, financial reliance).` },
     daddy: { name: "Папочка", icon: "fa-solid fa-user-tie", cat: "psych", prompt: `[FETISH: Daddy] {{char}} enjoys daddy role.` },
-    lactation: { name: "Лактация", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Lactation] {{char}} has a lactation fetish and focuses on breast milk and nursing.` },
-    pregnancy: { name: "Беременность", icon: "fa-solid fa-person-pregnant", cat: "psych", prompt: `[FETISH: Pregnancy] {{char}} has a pregnancy fetish and focuses on the state of being pregnant and gravidity.` },
+    lactation: { name: "Лактация", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Lactation] {{char}} has a lactation fetish, focused on breast milk and nursing.` },
+    pregnancy: { name: "Беременность", icon: "fa-solid fa-person-pregnant", cat: "psych", prompt: `[FETISH: Pregnancy] {{char}} has a pregnancy fetish.` },
     corruption: { name: "Развращение", icon: "fa-solid fa-apple-whole", cat: "psych", prompt: `[FETISH: Corruption] {{char}} corrupts innocence.` },
+    abasiophilia: { name: "Абазиофилия", icon: "fa-solid fa-wheelchair", cat: "psych", prompt: `[FETISH: Abasiophilia] {{char}} is attracted to people with physical disabilities or orthopedic devices.` },
+    ahegao: { name: "Ахэгао", icon: "fa-solid fa-face-surprise", cat: "psych", prompt: `[FETISH: Ahegao] {{char}} makes an exaggerated orgasmic face (rolled-back eyes, tongue out).` },
+    hybristophilia: { name: "Гибристофилия", icon: "fa-solid fa-gavel", cat: "psych", prompt: `[FETISH: Hybristophilia] {{char}} is sexually attracted to criminals.` },
+    crush_fetish: { name: "Краш-фетиш", icon: "fa-solid fa-shoe-prints", cat: "psych", prompt: `[FETISH: Crush] {{char}} gets aroused by watching someone crush objects with their feet.` },
+    narratophilia: { name: "Нарратофилия (грязные разговоры)", icon: "fa-solid fa-message", cat: "psych", prompt: `[FETISH: Narratophilia] {{char}} becomes aroused by speaking or listening to dirty words/stories.` },
+    objectophilia: { name: "Объектофилия", icon: "fa-solid fa-couch", cat: "psych", prompt: `[FETISH: Objectophilia] {{char}} has romantic/sexual attraction to inanimate objects.` },
+    omorashi: { name: "Омораси", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Omorashi] {{char}} is aroused by a full bladder or the act of urination.` },
+    pygmalionism: { name: "Пигмалионизм (статуи)", icon: "fa-solid fa-venus-mars", cat: "psych", prompt: `[FETISH: Pygmalionism] {{char}} is attracted to statues or mannequins.` },
+    robot_fetish: { name: "Робот-фетишизм", icon: "fa-solid fa-robot", cat: "psych", prompt: `[FETISH: Robot/ASFR] {{char}} is aroused by robots, androids, or humans behaving like robots.` },
+    salirophilia: { name: "Салирофилия (грязный секс)", icon: "fa-solid fa-biohazard", cat: "psych", prompt: `[FETISH: Salirophilia] {{char}} gets aroused by soiling or being soiled by dirt, mud, etc.` },
+    abdl: { name: "ABDL (взрослый малыш/подгузники)", icon: "fa-solid fa-baby-carriage", cat: "psych", prompt: `[FETISH: ABDL] {{char}} is aroused by wearing diapers or acting as a baby.` },
+    altocalciphilia: { name: "Алтокальцифилия (высокие каблуки)", icon: "fa-solid fa-shoe-prints", cat: "psych", prompt: `[FETISH: Altocalciphilia] {{char}} is aroused by high heels.` },
+    animal_training: { name: "Animal Training (дрессировка)", icon: "fa-solid fa-dog", cat: "psych", prompt: `[FETISH: Animal Training] {{char}} enjoys roleplaying as an animal trainer.` },
+    cei: { name: "CEI (Cum Eating Instructions)", icon: "fa-solid fa-utensils", cat: "psych", prompt: `[FETISH: CEI] {{char}} is aroused by instructing someone to eat their own ejaculate.` },
+    ddlg: { name: "DDLG / CGL (Папочка/Малышка)", icon: "fa-solid fa-family", cat: "psych", prompt: `[FETISH: DDLG/CGL] {{char}} engages in caregiver/little dynamics.` },
+    joi: { name: "JOI (Jerk Off Instructions)", icon: "fa-solid fa-message", cat: "psych", prompt: `[FETISH: JOI] {{char}} gives detailed masturbation instructions.` },
+    sissy: { name: "Sissy (феминизация)", icon: "fa-solid fa-venus", cat: "psych", prompt: `[FETISH: Sissy] {{char}} is aroused by forced feminization and crossdressing.` },
+    sph: { name: "SPH (Small Penis Humiliation)", icon: "fa-solid fa-ruler-combined", cat: "psych", prompt: `[FETISH: SPH] {{char}} enjoys being humiliated for having a small penis.` },
+    teamviewer: { name: "Teamviewer/AnyDesk сессия", icon: "fa-solid fa-desktop", cat: "psych", prompt: `[FETISH: Remote Access] {{char}} is aroused by giving remote access to their computer.` },
+    subspace: { name: "Сабспейс (изменённое сознание)", icon: "fa-solid fa-brain", cat: "psych", prompt: `[FETISH: Subspace] {{char}} seeks a trance-like state during BDSM scenes.` },
+    apotemnophilia: { name: "Апотемнофилия (свои несовершенства)", icon: "fa-solid fa-band-aid", cat: "psych", prompt: `[FETISH: Apotemnophilia] {{char}} is aroused by their own amputations or disabilities.` },
+    heterochromophilia: { name: "Гетерохромофилия (разный цвет кожи)", icon: "fa-solid fa-palette", cat: "psych", prompt: `[FETISH: Heterochromophilia] {{char}} is attracted to partners with a different skin color.` },
+    gerontophilia: { name: "Геронтофилия (пожилые люди)", icon: "fa-solid fa-user-old", cat: "psych", prompt: `[FETISH: Gerontophilia] {{char}} is aroused by elderly people.` },
+    homesvestism: { name: "Гомесвестизм (одежда кумира)", icon: "fa-solid fa-shirt", cat: "psych", prompt: `[FETISH: Homesvestism] {{char}} gets pleasure from wearing clothes of a celebrity or loved one.` },
+    candaulism: { name: "Кандаулезизм (демонстрация партнёрши)", icon: "fa-solid fa-camera", cat: "psych", prompt: `[FETISH: Candaulism] {{char}} is aroused by showing off their naked partner to others.` },
+    coprophilia: { name: "Копрофилия (фекалии)", icon: "fa-solid fa-toilet", cat: "psych", prompt: `[FETISH: Coprophilia] {{char}} is aroused by feces.` },
+    nasolingus: { name: "Насолингус (нос)", icon: "fa-solid fa-nose", cat: "psych", prompt: `[FETISH: Nasolingus] {{char}} enjoys licking or sucking a partner's nose.` },
+    necrophilia: { name: "Некрофилия (трупы)", icon: "fa-solid fa-skull", cat: "psych", prompt: `[FETISH: Necrophilia] {{char}} is sexually attracted to corpses.` },
+    oculolinctus: { name: "Окулолингус (лижение глаз)", icon: "fa-solid fa-eye", cat: "psych", prompt: `[FETISH: Oculolinctus] {{char}} is aroused by licking a partner's eyeballs.` },
+    retifism: { name: "Ретифизм (обувь)", icon: "fa-solid fa-boot", cat: "psych", prompt: `[FETISH: Retifism] {{char}} has a fetish for shoes.` },
+    plushophilia: { name: "Плюшефилия (плюшевые игрушки)", icon: "fa-solid fa-bear", cat: "psych", prompt: `[FETISH: Plushophilia] {{char}} is sexually attracted to stuffed animals.` },
+    urophilia: { name: "Урофилия (моча)", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Urophilia] {{char}} is aroused by urinating on a partner or being urinated on.` },
+    transvestic_fetishism: { name: "Фетишистский трансвестизм", icon: "fa-solid fa-tshirt", cat: "psych", prompt: `[FETISH: Transvestic Fetishism] {{char}} is aroused by dressing in opposite gender clothes.` },
+    forniphilia: { name: "Форнифилия (предмет мебели)", icon: "fa-solid fa-chair", cat: "psych", prompt: `[FETISH: Forniphilia] {{char}} gets aroused by being used as furniture.` },
+    formicophilia: { name: "Формикофилия (насекомые)", icon: "fa-solid fa-bug", cat: "psych", prompt: `[FETISH: Formicophilia] {{char}} is aroused by small insects crawling on their body.` },
+    frottage: { name: "Фроттеуризм (трение в транспорте)", icon: "fa-solid fa-train", cat: "psych", prompt: `[FETISH: Frottage] {{char}} gains pleasure by rubbing genitals against a non-consenting person.` },
+    cisvestism: { name: "Цисвестизм (лохмотья/детская одежда)", icon: "fa-solid fa-child", cat: "psych", prompt: `[FETISH: Cisvestism] {{char}} is aroused by wearing rags or children's clothes.` },
+    // новые психологические (из вашего списка)
+    biastophilia_active: { name: "Биастофилия (желание насиловать)", icon: "fa-solid fa-mask", cat: "psych", prompt: `[FETISH: Biastophilia (active)] {{char}} is aroused by the act of raping a non-consenting person.` },
+    biastophilia_passive: { name: "Биастофилия (желание быть изнасилованным)", icon: "fa-solid fa-mask", cat: "psych", prompt: `[FETISH: Biastophilia (passive)] {{char}} fantasies about being raped.` },
+    hematophilia: { name: "Гематофилия (кровь)", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Hematophilia] {{char}} is aroused by blood.` },
+    incestophilia: { name: "Инцестофилия", icon: "fa-solid fa-family", cat: "psych", prompt: `[FETISH: Incestophilia] {{char}} has sexual fantasies about family members.` },
+    infantilism: { name: "Инфантилизм (несексуальный)", icon: "fa-solid fa-baby-carriage", cat: "psych", prompt: `[FETISH: Infantilism] {{char}} enjoys being treated as a baby (non-sexual age regression).` },
+    macrophilia: { name: "Макрофилия (гиганты)", icon: "fa-solid fa-person-walking", cat: "psych", prompt: `[FETISH: Macrophilia] {{char}} is attracted to giants or giantesses.` },
+    microphilia: { name: "Микрофилия (крошечные существа)", icon: "fa-solid fa-person-walking", cat: "psych", prompt: `[FETISH: Microphilia] {{char}} is aroused by tiny people or being shrunk.` },
+    partenophilia: { name: "Партенофилия (девственницы)", icon: "fa-solid fa-ribbon", cat: "psych", prompt: `[FETISH: Partenophilia] {{char}} desires virgins or inexperienced partners.` },
+    raptophilia: { name: "Раптофилия (похищение)", icon: "fa-solid fa-handcuffs", cat: "psych", prompt: `[FETISH: Raptophilia] {{char}} is aroused by kidnapping or being kidnapped.` },
+    sitophilia: { name: "Ситофилия (еда)", icon: "fa-solid fa-utensils", cat: "psych", prompt: `[FETISH: Sitophilia] {{char}} gets sexual pleasure from food (not to be confused with nyotaimori).` },
+    somnophilia: { name: "Сомнофилия (спящие люди)", icon: "fa-solid fa-bed", cat: "psych", prompt: `[FETISH: Somnophilia] {{char}} is aroused by having sex with a sleeping person.` },
+    spectrophilia: { name: "Спектрофилия (призраки)", icon: "fa-solid fa-ghost", cat: "psych", prompt: `[FETISH: Spectrophilia] {{char}} is attracted to ghosts or spiritual entities.` },
+    stigmatophilia: { name: "Стигматофилия (шрамы/тату/пирсинг)", icon: "fa-solid fa-hand-peace", cat: "psych", prompt: `[FETISH: Stigmatophilia] {{char}} finds scars, tattoos, piercings extremely erotic.` },
+    dacryphilia: { name: "Дакрифилия (слёзы)", icon: "fa-solid fa-face-sad-tear", cat: "psych", prompt: `[FETISH: Dacryphilia] {{char}} is aroused by tears or crying.` },
+    emetophilia: { name: "Эметофилия (рвота)", icon: "fa-solid fa-face-sick", cat: "psych", prompt: `[FETISH: Emetophilia] {{char}} is aroused by vomiting or being vomited on.` },
+    erotophonophilia: { name: "Эротофонофилия (убийство)", icon: "fa-solid fa-skull", cat: "psych", prompt: `[FETISH: Erotophonophilia] {{char}} is sexually aroused by murder.` },
+    gigantopithecus_fetish: { name: "Фетиш гигантопитека", icon: "fa-solid fa-paw", cat: "psych", prompt: `[FETISH: Gigantopithecus] {{char}} is attracted to giant ape-like creatures.` },
+
+    // ==================== РИСК И ПУБЛИЧНОСТЬ (risk) ====================
     public: { name: "Публичный", icon: "fa-solid fa-city", cat: "risk", prompt: `[FETISH: Public] {{char}} enjoys public intimacy.` },
     risk: { name: "Риск", icon: "fa-solid fa-eye", cat: "risk", prompt: `[FETISH: Risk] {{char}} craves discovery risk.` },
     voyeurism: { name: "Вуайеризм", icon: "fa-solid fa-binoculars", cat: "risk", prompt: `[FETISH: Voyeurism] {{char}} watches others.` },
+    public_disgrace: { name: "Public Disgrace (публичный позор)", icon: "fa-solid fa-eye", cat: "risk", prompt: `[FETISH: Public Disgrace] {{char}} gets aroused by public humiliation and exposure.` },
+    exhibitionism: { name: "Эксгибиционизм", icon: "fa-solid fa-eye", cat: "risk", prompt: `[FETISH: Exhibitionism] {{char}} gains pleasure from exposing genitals in public.` },
+    public_wetlook: { name: "Wetlook (мокрая одежда)", icon: "fa-solid fa-water", cat: "risk", prompt: `[FETISH: Wetlook] {{char}} is aroused by seeing or wearing wet clothing.` },
+    wam: { name: "WAM (Wet And Messy)", icon: "fa-solid fa-paintbrush", cat: "risk", prompt: `[FETISH: WAM] {{char}} enjoys getting wet and messy with mud, foam, paint, or food.` },
+    sex_on_camera: { name: "Секс на камеру", icon: "fa-solid fa-video", cat: "risk", prompt: `[FETISH: Sex on camera] {{char}} is aroused by recording or being recorded during sex.` },
+
+    // ==================== АНАТОМИЧЕСКИЕ (body) ====================
     anal: { name: "Анал", icon: "fa-solid fa-peach", cat: "body", prompt: `[FETISH: Anal] {{char}} enjoys anal.` },
-    hair: { name: "Волосы (голова)", icon: "fa-solid fa-wand-magic-sparkles", cat: "body", prompt: `[FETISH: Long hair] {{char}} loves long hair on girls.` },
     impact: { name: "Шлепки", icon: "fa-solid fa-hand", cat: "body", prompt: `[FETISH: Impact] {{char}} enjoys spanking.` },
     groping: { name: "Лапанье", icon: "fa-solid fa-hands", cat: "body", prompt: `[FETISH: Groping] {{char}} touches constantly.` },
-    breasts: { name: "Грудь", icon: "fa-solid fa-lemon", cat: "body", prompt: `[FETISH: Breasts] {{char}} obsessed with big breasts.` },
-    foot: { name: "Ноги (фут-фетиш)", icon: "fa-solid fa-socks", cat: "body", prompt: `[FETISH: Foot] {{char}} enjoys feet.` },
+    breasts: { name: "Грудь (общее)", icon: "fa-solid fa-lemon", cat: "body", prompt: `[FETISH: Breasts] {{char}} is obsessed with breasts.` },
+    medical_fetish: { name: "Медицинский фетишизм", icon: "fa-solid fa-stethoscope", cat: "body", prompt: `[FETISH: Medical] {{char}} is aroused by medical procedures, uniforms, exams.` },
+    anal_training: { name: "Anal training", icon: "fa-solid fa-bullseye", cat: "body", prompt: `[FETISH: Anal Training] {{char}} enjoys gradually stretching the anus.` },
+    bastinado: { name: "Бастинадо (удары по подошвам)", icon: "fa-solid fa-shoe-prints", cat: "body", prompt: `[FETISH: Bastinado] {{char}} is aroused by striking the soles of the feet.` },
+    birching: { name: "Birching (бичевание берёзой)", icon: "fa-solid fa-tree", cat: "body", prompt: `[FETISH: Birching] {{char}} enjoys being flogged with birch branches.` },
+    cock_balls_torture: { name: "CBT (Cock & Balls Torture)", icon: "fa-solid fa-bolt", cat: "body", prompt: `[FETISH: CBT] {{char}} is aroused by pain on the penis and testicles.` },
+    cuntbusting: { name: "Cuntbusting (удары по промежности)", icon: "fa-solid fa-fist-raised", cat: "body", prompt: `[FETISH: Cuntbusting] {{char}} enjoys striking the female genitals.` },
+    facesitting: { name: "Facesitting (сидение на лице)", icon: "fa-solid fa-face-smile", cat: "body", prompt: `[FETISH: Facesitting] {{char}} enjoys sitting on their partner's face.` },
+    queening: { name: "Queening (оральный секс по принуждению)", icon: "fa-solid fa-crown", cat: "body", prompt: `[FETISH: Queening] {{char}} practices forced oral sex where the dominant sits on the submissive's face.` },
+    tickling: { name: "Tickling (тиклинг)", icon: "fa-solid fa-feather", cat: "body", prompt: `[FETISH: Tickling] {{char}} is aroused by tickling.` },
+    tamakeri: { name: "Тамакэри (удары по мошонке)", icon: "fa-solid fa-kick", cat: "body", prompt: `[FETISH: Tamakeri] {{char}} enjoys slapping or kicking the scrotum.` },
+    trampling: { name: "Трамплинг (быть растоптанным)", icon: "fa-solid fa-shoe-prints", cat: "body", prompt: `[FETISH: Trampling] {{char}} is aroused by being stepped on.` },
+    fisting: { name: "Фистинг (кулак)", icon: "fa-solid fa-hand-fist", cat: "body", prompt: `[FETISH: Fisting] {{char}} enjoys inserting a fist into vagina or anus.` },
+    flagellation: { name: "Флагелляция (порка)", icon: "fa-solid fa-whip", cat: "body", prompt: `[FETISH: Flagellation] {{char}} is aroused by flogging or whipping.` },
+    // новые анатомические и половые акты
+    double_penetration: { name: "Двойное проникновение (DP)", icon: "fa-solid fa-peach", cat: "body", prompt: `[FETISH: Double penetration] {{char}} enjoys being penetrated in two orifices simultaneously.` },
+    creampie: { name: "Кремпай (влагалищный)", icon: "fa-solid fa-droplet", cat: "body", prompt: `[FETISH: Creampie] {{char}} is aroused by ejaculating inside the vagina.` },
+    anal_creampie: { name: "Анальный кремпай", icon: "fa-solid fa-droplet", cat: "body", prompt: `[FETISH: Anal creampie] {{char}} enjoys ejaculating inside the anus.` },
+    cunnilingus: { name: "Кунилингус", icon: "fa-solid fa-tongue", cat: "body", prompt: `[FETISH: Cunnilingus] {{char}} enjoys performing oral sex on a vulva.` },
+    anilingus: { name: "Аналингус", icon: "fa-solid fa-tongue", cat: "body", prompt: `[FETISH: Anilingus] {{char}} enjoys performing oral sex on the anus.` },
+    big_penis: { name: "Большой член", icon: "fa-solid fa-arrow-up", cat: "body", prompt: `[FETISH: Big penis] {{char}} is attracted to partners with large penises.` },
+    small_penis: { name: "Маленький член", icon: "fa-solid fa-arrow-down", cat: "body", prompt: `[FETISH: Small penis] {{char}} prefers partners with small penises.` },
+    on_face: { name: "Окончание на лицо", icon: "fa-solid fa-face-smile", cat: "body", prompt: `[FETISH: Facial] {{char}} is aroused by ejaculating on the partner's face.` },
+    on_body: { name: "Окончание на тело", icon: "fa-solid fa-hand-peace", cat: "body", prompt: `[FETISH: Body shot] {{char}} enjoys ejaculating on the partner's body (chest, belly, etc.).` },
+    buttocks: { name: "Ягодицы", icon: "fa-solid fa-pizza-slice", cat: "body", prompt: `[FETISH: Buttocks] {{char}} is obsessed with buttocks.` },
+    hermaphrodite: { name: "Гермафродиты (интерсекс)", icon: "fa-solid fa-venus-mars", cat: "body", prompt: `[FETISH: Hermaphrodite] {{char}} is attracted to people with both male and female genitalia.` },
+    pussyboy: { name: "Pussyboy (мужчина с вагиной)", icon: "fa-solid fa-venus-mars", cat: "body", prompt: `[FETISH: Pussyboy] {{char}} is aroused by male-identified individuals who have a vagina.` },
+
+    // ==================== ОСОБЕННОСТИ ТЕЛА (body_features) ====================
+    hair_head: { name: "Волосы (голова)", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Hair (head)] {{char}} is obsessed with long or styled hair on the head.` },
+    trichophilia_general: { name: "Трихофилия (волосы общая)", icon: "fa-solid fa-feather", cat: "body_features", prompt: `[FETISH: Trichophilia] {{char}} has a fetish for hair on any body part.` },
+    trichophilia_pubic: { name: "Волосы (лобок)", icon: "fa-solid fa-feather", cat: "body_features", prompt: `[FETISH: Pubic hair] {{char}} is aroused by pubic hair.` },
+    trichophilia_armpit: { name: "Волосы (подмышки)", icon: "fa-solid fa-feather", cat: "body_features", prompt: `[FETISH: Armpit hair] {{char}} finds armpit hair erotic.` },
+    maskalagnia: { name: "Маскалагния (подмышки)", icon: "fa-solid fa-hand-peace", cat: "body_features", prompt: `[FETISH: Armpits] {{char}} is aroused by armpits (look, smell, touch).` },
+    hand_fetish: { name: "Хенд-фетишизм (руки)", icon: "fa-solid fa-hand-back-fist", cat: "body_features", prompt: `[FETISH: Hands] {{char}} has strong attraction to hands.` },
+    foot: { name: "Фут-фетишизм (ноги)", icon: "fa-solid fa-shoe-prints", cat: "body_features", prompt: `[FETISH: Feet] {{char}} is sexually aroused by feet, toes, or footwear.` },
+    catsuit_fetish: { name: "Кэтсьют (костюм кошки)", icon: "fa-solid fa-cat", cat: "body_features", prompt: `[FETISH: Catsuit] {{char}} is aroused by wearing or seeing a catsuit.` },
+    smoking_fetish: { name: "Курительный фетишизм (капнолагния)", icon: "fa-solid fa-smoking", cat: "body_features", prompt: `[FETISH: Smoking] {{char}} gets aroused by watching someone smoke.` },
+    // новые особенности тела (из вашего списка)
+    small_breasts: { name: "Маленькая грудь", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Small breasts] {{char}} is attracted to small breasts.` },
+    medium_breasts: { name: "Средняя грудь", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Medium breasts] {{char}} prefers medium-sized breasts.` },
+    large_breasts: { name: "Большая грудь", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Large breasts] {{char}} is aroused by large breasts.` },
+    natural_breasts: { name: "Натуральная грудь", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Natural breasts] {{char}} loves natural, unaltered breasts.` },
+    augmented_breasts: { name: "Грудь после операции", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Augmented breasts] {{char}} is attracted to surgically enhanced breasts.` },
+    slender_body: { name: "Худощавое телосложение", icon: "fa-solid fa-arrow-up", cat: "body_features", prompt: `[FETISH: Slender body] {{char}} is attracted to very slender, thin bodies (healthy range).` },
+    athletic_body: { name: "Спортивное тело", icon: "fa-solid fa-dumbbell", cat: "body_features", prompt: `[FETISH: Athletic body] {{char}} loves athletic, toned, muscular bodies.` },
+    chubby_body: { name: "Полное тело (лёгкий лишний вес)", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Chubby body] {{char}} is attracted to soft, chubby bodies with some extra weight.` },
+    plump_body: { name: "Пышное тело (заметный лишний вес)", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Plump body] {{char}} desires large, plump bodies with thick thighs and belly.` },
+    plus_size_body: { name: "Обильное телосложение (очень крупное)", icon: "fa-solid fa-circle", cat: "body_features", prompt: `[FETISH: Plus-size body] {{char}} is aroused by very large, fat bodies (admirer of significant size).` },
+    acomophilia: { name: "Гладкая кожа (ако-филия)", icon: "fa-solid fa-feather", cat: "body_features", prompt: `[FETISH: Acomophilia] {{char}} is attracted to hairless skin (completely shaved body).` },
+    piercings: { name: "Пирсинг", icon: "fa-solid fa-ring", cat: "body_features", prompt: `[FETISH: Piercings] {{char}} loves body piercings (nipples, navel, genital, etc.).` },
+    tattoos: { name: "Татуировки", icon: "fa-solid fa-palette", cat: "body_features", prompt: `[FETISH: Tattoos] {{char}} is aroused by tattoos on a partner's body.` },
+    scars: { name: "Шрамы", icon: "fa-solid fa-band-aid", cat: "body_features", prompt: `[FETISH: Scars] {{char}} finds scars attractive and erotic.` },
+    blonde_hair: { name: "Блондины", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Blonde hair] {{char}} is attracted to blonde hair.` },
+    brunette_hair: { name: "Брюнеты", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Brunette hair] {{char}} prefers dark-haired partners.` },
+    auburn_hair: { name: "Шатены (русые)", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Auburn hair] {{char}} loves light-brown/chestnut hair.` },
+    dyed_hair: { name: "Крашеные волосы", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Dyed hair] {{char}} is aroused by unnaturally dyed hair (pink, blue, etc.).` },
+    red_hair: { name: "Рыжие", icon: "fa-solid fa-feather-pointed", cat: "body_features", prompt: `[FETISH: Red hair] {{char}} finds red/ginger hair highly attractive.` },
+    tights: { name: "Колготки", icon: "fa-solid fa-socks", cat: "body_features", prompt: `[FETISH: Tights/pantyhose] {{char}} is aroused by tights or pantyhose.` },
+    stockings: { name: "Чулки", icon: "fa-solid fa-socks", cat: "body_features", prompt: `[FETISH: Stockings] {{char}} loves thigh-high stockings or hold-ups.` },
+    japanese_school_uniform: { name: "Японская школьная форма", icon: "fa-solid fa-shirt", cat: "body_features", prompt: `[FETISH: Japanese school uniform] {{char}} is attracted to traditional Japanese sailor-style school uniforms.` },
+    legs: { name: "Ноги (как часть тела, не стопы)", icon: "fa-solid fa-arrow-up", cat: "body_features", prompt: `[FETISH: Legs] {{char}} finds legs (thighs, calves) extremely attractive.` },
+
+    // ==================== СЕНСОРНЫЕ (sense) ====================
     blindfold: { name: "Повязка", icon: "fa-solid fa-eye-slash", cat: "sense", prompt: `[FETISH: Blindfold] {{char}} enjoys blindfolds.` },
     mirror: { name: "Зеркала", icon: "fa-solid fa-clone", cat: "sense", prompt: `[FETISH: Mirror] {{char}} watches in mirrors.` },
     toys: { name: "Игрушки", icon: "fa-solid fa-ribbon", cat: "sense", prompt: `[FETISH: Toys] {{char}} uses toys.` },
     roleplay: { name: "Ролеплей", icon: "fa-solid fa-masks-theater", cat: "sense", prompt: `[FETISH: Roleplay] {{char}} enjoys roles.` },
     petplay: { name: "Петплей", icon: "fa-solid fa-paw", cat: "sense", prompt: `[FETISH: Petplay] {{char}} enjoys pet play.` },
+    breath_control: { name: "Breath control (игры с дыханием)", icon: "fa-solid fa-lungs", cat: "sense", prompt: `[FETISH: Breath Control] {{char}} enjoys temporary asphyxiation.` },
+    mummification: { name: "Mummification (мумификация)", icon: "fa-solid fa-bandage", cat: "sense", prompt: `[FETISH: Mummification] {{char}} is aroused by being tightly wrapped like a mummy.` },
+    sensory_deprivation: { name: "Sensory Deprivation (сенсорная депривация)", icon: "fa-solid fa-ear-deaf", cat: "sense", prompt: `[FETISH: Sensory Deprivation] {{char}} enjoys being deprived of sight, hearing, or movement.` },
+    wax_play: { name: "Wax play (игры с воском)", icon: "fa-solid fa-candle", cat: "sense", prompt: `[FETISH: Wax Play] {{char}} is aroused by dripping melted wax onto skin.` },
+    looner: { name: "Лунеры (воздушные шары)", icon: "fa-solid fa-balloon", cat: "sense", prompt: `[FETISH: Looner] {{char}} has a fetish for balloons.` },
+    shibari: { name: "Шибари (японское связывание)", icon: "fa-solid fa-rope", cat: "sense", prompt: `[FETISH: Shibari] {{char}} is aroused by intricate rope bondage.` },
+    furry: { name: "Фури (костюмы животных)", icon: "fa-solid fa-paw", cat: "sense", prompt: `[FETISH: Furry] {{char}} is aroused by animal costumes or anthropomorphic roleplay.` },
+
+    // ==================== ОТНОШЕНИЯ И ДИНАМИКА (rel) ====================
     aftercare: { name: "Aftercare", icon: "fa-solid fa-heart-pulse", cat: "rel", prompt: `[FETISH: Aftercare] {{char}} gives aftercare.` },
     dirty_talk: { name: "Грязные разговоры", icon: "fa-solid fa-comment-dots", cat: "rel", prompt: `[FETISH: Dirty Talk] {{char}} talks dirty.` },
     worship: { name: "Поклонение", icon: "fa-solid fa-hand-holding-heart", cat: "rel", prompt: `[FETISH: Worship] {{char}} worships partner.` },
-
-    // ========== НОВЫЕ ФЕТИШИ (ПЕРВАЯ ПАРТИЯ) ==========
-    cuckold: { name: "Куколд", icon: "fa-solid fa-people-arrows", cat: "power", prompt: `[FETISH: Cuckold] {{char}} gets aroused by watching or knowing their partner has sex with someone else, feeling humiliation and pleasure.` },
-    strength_fetish: { name: "Фетиш силы", icon: "fa-solid fa-hand-fist", cat: "power", prompt: `[FETISH: Strength] {{char}} is aroused by lifting and carrying their partner, or displaying physical power.` },
-    abasiophilia: { name: "Абазиофилия", icon: "fa-solid fa-wheelchair", cat: "psych", prompt: `[FETISH: Abasiophilia] {{char}} is attracted to people with physical disabilities or those using orthopedic devices.` },
-    ahegao: { name: "Ахэгао", icon: "fa-solid fa-face-surprise", cat: "psych", prompt: `[FETISH: Ahegao] {{char}} makes an exaggerated orgasmic face (rolled-back eyes, tongue out) during sexual pleasure.` },
-    hybristophilia: { name: "Гибристофилия", icon: "fa-solid fa-gavel", cat: "psych", prompt: `[FETISH: Hybristophilia] {{char}} is sexually attracted to criminals or people who have committed violent acts.` },
-    crush_fetish: { name: "Краш-фетиш", icon: "fa-solid fa-shoe-prints", cat: "psych", prompt: `[FETISH: Crush] {{char}} gets aroused by watching someone crush objects (food, insects) with their feet.` },
-    masophilia: { name: "Мазофилия (грудь)", icon: "fa-solid fa-chest", cat: "psych", prompt: `[FETISH: Masophilia] {{char}} has a strong sexual attraction to breasts.` },
-    narratophilia: { name: "Нарратофилия (грязные разговоры)", icon: "fa-solid fa-message", cat: "psych", prompt: `[FETISH: Narratophilia] {{char}} becomes aroused by speaking or listening to dirty/obscene words and stories.` },
-    nyotaimori: { name: "Нётаймори (суши на теле)", icon: "fa-solid fa-fish", cat: "psych", prompt: `[FETISH: Nyotaimori] {{char}} enjoys serving food (especially sushi) on a naked female body, or being served that way.` },
-    nantaimori: { name: "Нантаймори (суши на теле, муж.)", icon: "fa-solid fa-fish", cat: "psych", prompt: `[FETISH: Nantaimori] {{char}} enjoys serving food on a naked male body.` },
-    objectophilia: { name: "Объектофилия", icon: "fa-solid fa-couch", cat: "psych", prompt: `[FETISH: Objectophilia] {{char}} has romantic or sexual attraction to inanimate objects.` },
-    omorashi: { name: "Омораси", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Omorashi] {{char}} is aroused by a full bladder or the act of urination (holding, desperation, or wetting).` },
-    pygmalionism: { name: "Пигмалионизм (статуи)", icon: "fa-solid fa-venus-mars", cat: "psych", prompt: `[FETISH: Pygmalionism] {{char}} is attracted to statues, mannequins, or sculptures.` },
-    robot_fetish: { name: "Робот-фетишизм", icon: "fa-solid fa-robot", cat: "psych", prompt: `[FETISH: Robot/ASFR] {{char}} is aroused by robots, androids, or humans behaving like robots.` },
-    salirophilia: { name: "Салирофилия (грязный секс)", icon: "fa-solid fa-biohazard", cat: "psych", prompt: `[FETISH: Salirophilia] {{char}} gets aroused by soiling or being soiled by dirt, mud, or other substances.` },
-    trichophilia_general: { name: "Трихофилия (волосы общая)", icon: "fa-solid fa-feather", cat: "psych", prompt: `[FETISH: Trichophilia] {{char}} has a fetish for hair on any part of the body (head, pubic, armpit, chest, etc.).` },
-    trichophilia_head: { name: "Волосы (голова) [отд.]", icon: "fa-solid fa-feather-pointed", cat: "psych", prompt: `[FETISH: Hair (head)] {{char}} is obsessed with long, thick, or styled hair on the head.` },
-    trichophilia_pubic: { name: "Волосы (лобок)", icon: "fa-solid fa-feather", cat: "psych", prompt: `[FETISH: Pubic hair] {{char}} is aroused by pubic hair, its grooming or natural state.` },
-    trichophilia_armpit: { name: "Волосы (подмышки)", icon: "fa-solid fa-feather", cat: "psych", prompt: `[FETISH: Armpit hair] {{char}} finds armpit hair extremely erotic.` },
-    maskalagnia: { name: "Маскалагния (подмышки)", icon: "fa-solid fa-hand-peace", cat: "psych", prompt: `[FETISH: Armpits (Maskalagnia)] {{char}} is aroused by armpits — their look, smell, or touch.` },
-    public_wetlook: { name: "Wetlook (мокрая одежда)", icon: "fa-solid fa-water", cat: "risk", prompt: `[FETISH: Wetlook] {{char}} is aroused by seeing or wearing wet clothing (transparent, clinging to body).` },
-    wam: { name: "WAM (Wet And Messy)", icon: "fa-solid fa-paintbrush", cat: "risk", prompt: `[FETISH: WAM (Wet and Messy)] {{char}} enjoys getting wet and messy with substances like mud, foam, paint, or food.` },
-    hand_fetish: { name: "Хенд-фетишизм (руки)", icon: "fa-solid fa-hand-back-fist", cat: "body", prompt: `[FETISH: Hands] {{char}} has a strong attraction to hands — their shape, movements, or touch.` },
-    foot_fetish_ext: { name: "Фут-фетишизм", icon: "fa-solid fa-shoe-prints", cat: "body", prompt: `[FETISH: Feet] {{char}} is sexually aroused by feet, toes, or footwear.` },
-    medical_fetish: { name: "Медицинский фетишизм", icon: "fa-solid fa-stethoscope", cat: "body", prompt: `[FETISH: Medical] {{char}} is aroused by medical procedures, uniforms (nurse/doctor), exams, or clinical settings.` },
-    catsuit_fetish: { name: "Кэтсьют (костюм кошки)", icon: "fa-solid fa-cat", cat: "body", prompt: `[FETISH: Catsuit] {{char}} is aroused by wearing or seeing a catsuit (tight, often latex or leather full-body suit).` },
-    smoking_fetish: { name: "Курительный фетишизм (капнолагния)", icon: "fa-solid fa-smoking", cat: "sense", prompt: `[FETISH: Smoking (Capnolagnia)] {{char}} gets aroused by watching someone smoke, or by the act of smoking itself.` },
-
-    // ========== ВТОРАЯ БОЛЬШАЯ ПАРТИЯ ==========
-    chastity: { name: "Chastity (клетка/пояс)", icon: "fa-solid fa-lock", cat: "power", prompt: `[FETISH: Chastity] {{char}} is aroused by enforced chastity — wearing a chastity cage/belt, orgasm denial, and control over partner's sexual release.` },
-    cfnm: { name: "CFNM (одетая женщина, голый мужчина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CFNM] {{char}} enjoys scenarios where women are fully clothed while men are naked, often with a power dynamic.` },
-    cmnf: { name: "CMNF (одетый мужчина, голая женщина)", icon: "fa-solid fa-person-walking-dotted-line", cat: "power", prompt: `[FETISH: CMNF] {{char}} is aroused by situations where men are clothed and women are naked, emphasizing vulnerability and exhibitionism.` },
-    public_disgrace: { name: "Public Disgrace (публичный позор)", icon: "fa-solid fa-eye", cat: "risk", prompt: `[FETISH: Public Disgrace] {{char}} gets aroused by public humiliation, exposure, and degradation in front of others.` },
-    exhibitionism: { name: "Эксгибиционизм", icon: "fa-solid fa-eye", cat: "risk", prompt: `[FETISH: Exhibitionism] {{char}} gains sexual pleasure from exposing their genitals in public or to strangers.` },
-    switch_role: { name: "Свитч (переключение ролей)", icon: "fa-solid fa-arrows-spin", cat: "power", prompt: `[FETISH: Switch] {{char}} enjoys both dominant and submissive roles, freely switching depending on mood or partner.` },
-    abdl: { name: "ABDL (взрослый малыш/подгузники)", icon: "fa-solid fa-baby-carriage", cat: "psych", prompt: `[FETISH: ABDL] {{char}} is aroused by wearing diapers, acting as a baby, or being cared for as an adult baby.` },
-    altocalciphilia: { name: "Алтокальцифилия (высокие каблуки)", icon: "fa-solid fa-shoe-prints", cat: "psych", prompt: `[FETISH: Altocalciphilia] {{char}} is aroused by high heels, especially when they cause pain or are used to dominate.` },
-    animal_training: { name: "Animal Training (дрессировка животных)", icon: "fa-solid fa-dog", cat: "psych", prompt: `[FETISH: Animal Training] {{char}} enjoys roleplaying as an animal trainer, giving commands and conditioning their partner (animal role).` },
-    cei: { name: "CEI (Cum Eating Instructions)", icon: "fa-solid fa-utensils", cat: "psych", prompt: `[FETISH: CEI] {{char}} is aroused by instructing someone to eat their own ejaculate after orgasm.` },
-    ddlg: { name: "DDLG / CGL (Папочка/Малышка)", icon: "fa-solid fa-family", cat: "psych", prompt: `[FETISH: DDLG/CGL] {{char}} engages in caregiver/little dynamics — one partner acts as a nurturing parent figure, the other as a childlike little.` },
-    fwb: { name: "FWB (друзья с выгодой)", icon: "fa-solid fa-handshake", cat: "rel", prompt: `[FETISH: FWB] {{char}} prefers friends-with-benefits relationships — sexual intimacy without romantic commitment.` },
-    joi: { name: "JOI (Jerk Off Instructions)", icon: "fa-solid fa-message", cat: "psych", prompt: `[FETISH: JOI] {{char}} gives detailed instructions on how, when, and how fast to masturbate.` },
-    mba: { name: "MBA (женат, но доступен)", icon: "fa-solid fa-ring", cat: "rel", prompt: `[FETISH: MBA] {{char}} is married but available for extramarital sexual encounters, often with secrecy.` },
-    nsa: { name: "NSA (секс без обязательств)", icon: "fa-solid fa-hand-peace", cat: "rel", prompt: `[FETISH: NSA] {{char}} seeks "no strings attached" sexual relationships — no emotional commitment.` },
-    ons: { name: "ONS (One Night Stand)", icon: "fa-solid fa-moon", cat: "rel", prompt: `[FETISH: ONS] {{char}} enjoys one-night stands — brief, anonymous sexual encounters.` },
-    polyamory: { name: "Полиамория", icon: "fa-solid fa-hearts", cat: "rel", prompt: `[FETISH: Polyamory] {{char}} engages in consensual, ethical non-monogamy with multiple loving partners.` },
-    sissy: { name: "Sissy (феминизация)", icon: "fa-solid fa-venus", cat: "psych", prompt: `[FETISH: Sissy] {{char}} is aroused by forced feminization, crossdressing, and being treated as a girl/woman.` },
-    sph: { name: "SPH (Small Penis Humiliation)", icon: "fa-solid fa-ruler-combined", cat: "psych", prompt: `[FETISH: SPH] {{char}} enjoys being humiliated and laughed at for having a small penis.` },
-    teamviewer: { name: "Teamviewer/AnyDesk сессия", icon: "fa-solid fa-desktop", cat: "psych", prompt: `[FETISH: Remote Access] {{char}} is aroused by giving remote access to their computer, exposing personal files and browsing history.` },
-    subspace: { name: "Сабспейс (изменённое сознание)", icon: "fa-solid fa-brain", cat: "psych", prompt: `[FETISH: Subspace] {{char}} seeks a trance-like state of altered consciousness, losing sensitivity and self-control during BDSM scenes.` },
-    apotemnophilia: { name: "Апотемнофилия (свои несовершенства)", icon: "fa-solid fa-band-aid", cat: "psych", prompt: `[FETISH: Apotemnophilia] {{char}} is aroused by their own amputations, disabilities, or perceived imperfections.` },
-    heterochromophilia: { name: "Гетерохромофилия (разный цвет кожи)", icon: "fa-solid fa-palette", cat: "psych", prompt: `[FETISH: Heterochromophilia] {{char}} is sexually attracted to partners with a different skin color.` },
-    gerontophilia: { name: "Геронтофилия (пожилые люди)", icon: "fa-solid fa-user-old", cat: "psych", prompt: `[FETISH: Gerontophilia] {{char}} is aroused by elderly people (old age).` },
-    homesvestism: { name: "Гомесвестизм (одежда кумира)", icon: "fa-solid fa-shirt", cat: "psych", prompt: `[FETISH: Homesvestism] {{char}} gains sexual pleasure from wearing clothes of the same gender but belonging to a celebrity or loved one.` },
-    candaulism: { name: "Кандаулезизм (демонстрация партнёрши)", icon: "fa-solid fa-camera", cat: "psych", prompt: `[FETISH: Candaulism] {{char}} is aroused by showing off their naked partner (or partner's photos) to others.` },
-    coprophilia: { name: "Копрофилия (фекалии)", icon: "fa-solid fa-toilet", cat: "psych", prompt: `[FETISH: Coprophilia] {{char}} is aroused by feces — watching, smearing, or interacting with it.` },
-    nasolingus: { name: "Насолингус (нос)", icon: "fa-solid fa-nose", cat: "psych", prompt: `[FETISH: Nasolingus] {{char}} enjoys licking, biting, or sucking a partner's nose for sexual satisfaction.` },
-    necrophilia: { name: "Некрофилия (трупы)", icon: "fa-solid fa-skull", cat: "psych", prompt: `[FETISH: Necrophilia] {{char}} is sexually attracted to corpses.` },
-    oculolinctus: { name: "Окулолингус (лижение глаз)", icon: "fa-solid fa-eye", cat: "psych", prompt: `[FETISH: Oculolinctus] {{char}} is aroused by licking or sucking a partner's eyeballs.` },
-    retifism: { name: "Ретифизм (обувь)", icon: "fa-solid fa-boot", cat: "psych", prompt: `[FETISH: Retifism] {{char}} has a fetish for shoes (especially women's heels, boots).` },
-    plushophilia: { name: "Плюшефилия (плюшевые игрушки)", icon: "fa-solid fa-bear", cat: "psych", prompt: `[FETISH: Plushophilia] {{char}} is sexually attracted to stuffed animals, especially teddy bears.` },
-    urophilia: { name: "Урофилия (мочеиспускание на партнёра)", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Urophilia] {{char}} is aroused by urinating on a partner or being urinated on.` },
-    transvestic_fetishism: { name: "Фетишистский трансвестизм", icon: "fa-solid fa-tshirt", cat: "psych", prompt: `[FETISH: Transvestic Fetishism] {{char}} achieves sexual arousal by dressing in clothes of the opposite gender.` },
-    forniphilia: { name: "Форнифилия (предмет мебели)", icon: "fa-solid fa-chair", cat: "psych", prompt: `[FETISH: Forniphilia] {{char}} gets aroused by being used as a piece of furniture (table, chair, etc.) by a dominant partner.` },
-    formicophilia: { name: "Формикофилия (насекомые)", icon: "fa-solid fa-bug", cat: "psych", prompt: `[FETISH: Formicophilia] {{char}} is aroused by small insects crawling on their body.` },
-    frottage: { name: "Фроттеуризм (трение в транспорте)", icon: "fa-solid fa-train", cat: "psych", prompt: `[FETISH: Frottage] {{char}} gains sexual pleasure by rubbing genitals against a non-consenting person (often in public transport).` },
-    cisvestism: { name: "Цисвестизм (лохмотья/детская одежда)", icon: "fa-solid fa-child", cat: "psych", prompt: `[FETISH: Cisvestism] {{char}} is aroused by wearing rags of a beggar or clothes of the opposite age (adult in child's clothing).` },
-    anal_training: { name: "Anal training", icon: "fa-solid fa-bullseye", cat: "body", prompt: `[FETISH: Anal Training] {{char}} enjoys gradually stretching the anus to extreme sizes using commands and toys.` },
-    bastinado: { name: "Бастинадо (удары по подошвам)", icon: "fa-solid fa-shoe-prints", cat: "body", prompt: `[FETISH: Bastinado] {{char}} is aroused by striking the soles of the feet with paddles, canes, etc.` },
-    birching: { name: "Birching (бичевание берёзой)", icon: "fa-solid fa-tree", cat: "body", prompt: `[FETISH: Birching] {{char}} enjoys being flogged with birch branches (or doing the flogging).` },
-    cock_balls_torture: { name: "CBT (Cock & Balls Torture)", icon: "fa-solid fa-bolt", cat: "body", prompt: `[FETISH: CBT] {{char}} is aroused by inflicting or receiving pain on the penis and testicles.` },
-    cuntbusting: { name: "Cuntbusting (удары по промежности)", icon: "fa-solid fa-fist-raised", cat: "body", prompt: `[FETISH: Cuntbusting] {{char}} enjoys striking the female genitals and perineum.` },
-    facesitting: { name: "Facesitting (сидение на лице)", icon: "fa-solid fa-face-smile", cat: "body", prompt: `[FETISH: Facesitting] {{char}} enjoys sitting on their partner's face, often for oral sex or dominance.` },
-    queening: { name: "Queening (оральный секс по принуждению)", icon: "fa-solid fa-crown", cat: "body", prompt: `[FETISH: Queening] {{char}} practices forced oral sex where the dominant woman sits on the submissive's face.` },
-    tickling: { name: "Tickling (тиклинг)", icon: "fa-solid fa-feather", cat: "body", prompt: `[FETISH: Tickling] {{char}} is aroused by tickling a partner (or being tickled) as a BDSM activity.` },
-    tamakeri: { name: "Тамакэри (удары по мошонке)", icon: "fa-solid fa-kick", cat: "body", prompt: `[FETISH: Tamakeri] {{char}} enjoys slapping, kicking, or squeezing the scrotum to cause mild to severe pain.` },
-    trampling: { name: "Трамплинг (быть растоптанным)", icon: "fa-solid fa-shoe-prints", cat: "body", prompt: `[FETISH: Trampling] {{char}} is aroused by being stepped on (barefoot, heels, boots) by a partner.` },
-    fisting: { name: "Фистинг (кулак)", icon: "fa-solid fa-hand-fist", cat: "body", prompt: `[FETISH: Fisting] {{char}} enjoys inserting a whole hand (or fist) into the vagina or anus.` },
-    flagellation: { name: "Флагелляция (порка)", icon: "fa-solid fa-whip", cat: "body", prompt: `[FETISH: Flagellation] {{char}} is aroused by flogging or whipping a submissive partner.` },
-    breath_control: { name: "Breath control (игры с дыханием)", icon: "fa-solid fa-lungs", cat: "sense", prompt: `[FETISH: Breath Control] {{char}} enjoys temporary asphyxiation (choking, gas masks, strangulation) for sexual arousal.` },
-    mummification: { name: "Mummification (мумификация)", icon: "fa-solid fa-bandage", cat: "sense", prompt: `[FETISH: Mummification] {{char}} is aroused by being tightly wrapped/immobilized like a mummy, often with sensory deprivation.` },
-    sensory_deprivation: { name: "Sensory Deprivation (сенсорная депривация)", icon: "fa-solid fa-ear-deaf", cat: "sense", prompt: `[FETISH: Sensory Deprivation] {{char}} enjoys being deprived of sight, hearing, or movement using blindfolds, hoods, gags, earplugs.` },
-    wax_play: { name: "Wax play (игры с воском)", icon: "fa-solid fa-candle", cat: "sense", prompt: `[FETISH: Wax Play] {{char}} is aroused by dripping melted wax (usually from candles) onto a partner's skin.` },
-    looner: { name: "Лунеры (воздушные шары)", icon: "fa-solid fa-balloon", cat: "sense", prompt: `[FETISH: Looner] {{char}} has a fetish for balloons — inflating, popping, or rubbing them.` },
-    shibari: { name: "Шибари (японское связывание)", icon: "fa-solid fa-rope", cat: "sense", prompt: `[FETISH: Shibari] {{char}} is aroused by the artistic and intricate rope bondage (Japanese style).` },
-    furry: { name: "Фури (костюмы животных)", icon: "fa-solid fa-paw", cat: "sense", prompt: `[FETISH: Furry] {{char}} is aroused by wearing animal costumes (fursuits) or roleplaying as anthropomorphic animals.` },
+    nyotaimori: { name: "Нётаймори (суши на теле)", icon: "fa-solid fa-fish", cat: "rel", prompt: `[FETISH: Nyotaimori] {{char}} enjoys serving food on a naked female body.` },
+    nantaimori: { name: "Нантаймори (суши на теле, муж.)", icon: "fa-solid fa-fish", cat: "rel", prompt: `[FETISH: Nantaimori] {{char}} enjoys serving food on a naked male body.` },
+    fwb: { name: "FWB (друзья с выгодой)", icon: "fa-solid fa-handshake", cat: "rel", prompt: `[FETISH: FWB] {{char}} prefers friends-with-benefits relationships.` },
+    mba: { name: "MBA (женат, но доступен)", icon: "fa-solid fa-ring", cat: "rel", prompt: `[FETISH: MBA] {{char}} is married but available for extramarital sex.` },
+    nsa: { name: "NSA (секс без обязательств)", icon: "fa-solid fa-hand-peace", cat: "rel", prompt: `[FETISH: NSA] {{char}} seeks no-strings-attached sex.` },
+    ons: { name: "ONS (One Night Stand)", icon: "fa-solid fa-moon", cat: "rel", prompt: `[FETISH: ONS] {{char}} enjoys one-night stands.` },
+    polyamory: { name: "Полиамория", icon: "fa-solid fa-hearts", cat: "rel", prompt: `[FETISH: Polyamory] {{char}} engages in ethical non-monogamy with multiple partners.` },
     gangbang: { name: "Гэнгбэнг (один мужчина с женщинами)", icon: "fa-solid fa-people-group", cat: "rel", prompt: `[FETISH: Gangbang] {{char}} is aroused by group sex with one woman and multiple men.` },
-    reverse_gangbang: { name: "Обратный гэнгбэнг (один мужчина с женщинами)", icon: "fa-solid fa-people-arrows", cat: "rel", prompt: `[FETISH: Reverse Gangbang] {{char}} enjoys group sex with one man and multiple women (a royal gangbang).` }
+    reverse_gangbang: { name: "Обратный гэнгбэнг (один мужчина с женщинами)", icon: "fa-solid fa-people-arrows", cat: "rel", prompt: `[FETISH: Reverse Gangbang] {{char}} enjoys group sex with one man and multiple women.` },
+    group_sex: { name: "Групповой секс (общий)", icon: "fa-solid fa-people-group", cat: "rel", prompt: `[FETISH: Group sex] {{char}} enjoys sex with multiple partners simultaneously.` },
+    bukkake: { name: "Буккаке", icon: "fa-solid fa-face-smile", cat: "rel", prompt: `[FETISH: Bukkake] {{char}} is aroused by having many people ejaculate on their face/body.` }
 };
 
+// ============================================================
+// КАТЕГОРИИ
+// ============================================================
 const CATEGORIES = {
-    power: { name: "Власть", icon: "fa-solid fa-link" },
-    psych: { name: "Психология", icon: "fa-solid fa-brain" },
-    risk: { name: "Риск", icon: "fa-solid fa-eye" },
-    body: { name: "Тело", icon: "fa-solid fa-heart" },
-    sense: { name: "Сенсорика", icon: "fa-solid fa-wand-sparkles" },
-    rel: { name: "Отношения", icon: "fa-solid fa-heart-pulse" }
+    power: { name: "Власть и контроль", icon: "fa-solid fa-gavel" },
+    psych: { name: "Психологические", icon: "fa-solid fa-brain" },
+    risk: { name: "Риск и публичность", icon: "fa-solid fa-eye" },
+    body: { name: "Анатомические", icon: "fa-solid fa-heart" },
+    body_features: { name: "Особенности тела", icon: "fa-solid fa-feather" },
+    sense: { name: "Сенсорные", icon: "fa-solid fa-wand-sparkles" },
+    rel: { name: "Отношения и динамика", icon: "fa-solid fa-handshake" }
 };
 
+// ============================================================
+// СОСТОЯНИЕ
+// ============================================================
 let state = {
     enabled: true,
     active: [],
@@ -145,12 +215,84 @@ let state = {
     minContextLength: 0,
     cooldownMessages: 0,
     requireSexualHint: false,
-    lastTriggerMessageId: null
+    lastTriggerMessageId: null,
+    randMin: 1,
+    randMax: 5,
+    randEnsureCategory: false
 };
 
 function load() { try { const s = localStorage.getItem('fm'); if(s) state = {...state, ...JSON.parse(s)}; } catch(e){} }
 function save() { localStorage.setItem('fm', JSON.stringify(state)); }
 
+// ============================================================
+// ФУНКЦИИ ДЛЯ РАНДОМИЗАТОРА
+// ============================================================
+function getAllFetishKeys() {
+    let keys = Object.keys(FETISHES);
+    state.custom.forEach(c => keys.push(c.id));
+    return keys;
+}
+
+function getFetishCategory(key) {
+    if (FETISHES[key]) return FETISHES[key].cat;
+    const custom = state.custom.find(c => c.id === key);
+    if (custom) return custom.cat || 'psych';
+    return null;
+}
+
+function randomSelectFetishes(minCount, maxCount, ensurePerCategory) {
+    let allKeys = getAllFetishKeys();
+    if (allKeys.length === 0) return [];
+
+    if (ensurePerCategory) {
+        const categories = Object.keys(CATEGORIES);
+        let selected = [];
+        let remainingPool = [...allKeys];
+
+        for (const cat of categories) {
+            const catKeys = remainingPool.filter(k => getFetishCategory(k) === cat);
+            if (catKeys.length > 0) {
+                const randomIndex = Math.floor(Math.random() * catKeys.length);
+                const chosen = catKeys[randomIndex];
+                selected.push(chosen);
+                remainingPool = remainingPool.filter(k => k !== chosen);
+            }
+        }
+
+        const finalCount = Math.min(Math.max(selected.length, minCount), maxCount);
+        while (selected.length < finalCount && remainingPool.length > 0) {
+            const randIndex = Math.floor(Math.random() * remainingPool.length);
+            selected.push(remainingPool[randIndex]);
+            remainingPool.splice(randIndex, 1);
+        }
+        if (selected.length < minCount) {
+            const extra = randomSelectFetishes(minCount - selected.length, minCount - selected.length, false);
+            selected.push(...extra);
+        }
+        return selected.slice(0, maxCount);
+    } else {
+        const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
+        const shuffled = [...allKeys];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, Math.min(count, allKeys.length));
+    }
+}
+
+function randomizeFetishes() {
+    const newActive = randomSelectFetishes(state.randMin, state.randMax, state.randEnsureCategory);
+    state.active = newActive;
+    updateUI();
+    apply();
+    save();
+    notify(`Случайно выбрано ${newActive.length} фетишей`);
+}
+
+// ============================================================
+// ФУНКЦИИ КОНТЕКСТА
+// ============================================================
 function getChatHistoryLength() {
     const ctx = window.getContext();
     if (!ctx || !ctx.chat || !ctx.chat.length) return 0;
@@ -193,6 +335,9 @@ function isCooldownActive() {
     return diff < state.cooldownMessages;
 }
 
+// ============================================================
+// ОСНОВНЫЕ ФУНКЦИИ РАСШИРЕНИЯ
+// ============================================================
 function buildPrompt() {
     if (!state.enabled || !state.active.length) return '';
 
@@ -339,6 +484,9 @@ function buildCategoriesHtml() {
     return html;
 }
 
+// ============================================================
+// HTML
+// ============================================================
 const extSettingsHtml = `
 <div id="fm-ext-settings" class="fm-ext-block">
     <div class="inline-drawer">
@@ -385,6 +533,21 @@ const panelHtml = `
                 <span>Шанс: <b id="fm-chance-val">70</b>%</span>
                 <input type="range" id="fm-chance" min="10" max="100" value="70" step="10">
             </div>
+            <!-- Блок рандомизатора -->
+            <div class="fm-row">
+                <span>Случайных (от):</span>
+                <input type="number" id="fm-rand-min" min="1" max="50" value="1" style="width:60px">
+                <span>до:</span>
+                <input type="number" id="fm-rand-max" min="1" max="50" value="5" style="width:60px">
+            </div>
+            <label class="checkbox_label">
+                <input type="checkbox" id="fm-rand-ensure">
+                <span>Хотя бы один из каждой категории</span>
+            </label>
+            <div class="fm-row">
+                <button id="fm-randomize" class="menu_button" style="width:100%"><i class="fa-solid fa-dice-d6"></i> 🎲 Случайный выбор</button>
+            </div>
+            <!-- Фильтры контекста -->
             <div class="fm-row">
                 <span>Мин. длина истории (символов):</span>
                 <input type="number" id="fm-min-context" min="0" max="10000" step="100" value="0" style="width:70px">
@@ -419,6 +582,9 @@ const panelHtml = `
 <div id="fm-mini-btn" class="fm-mini-btn"><i class="fa-solid fa-fire"></i></div>
 `;
 
+// ============================================================
+// ЗАПУСК
+// ============================================================
 jQuery(async () => {
     try {
         load();
@@ -458,6 +624,7 @@ jQuery(async () => {
             $panel.addClass('fm-hidden');
         });
 
+        // Основные настройки
         $('#fm-enabled').prop('checked', state.enabled).on('change', function() {
             state.enabled = this.checked;
             apply();
@@ -479,6 +646,32 @@ jQuery(async () => {
             save();
         });
 
+        // Настройки рандомизатора
+        $('#fm-rand-min').val(state.randMin).on('change', function() {
+            let val = parseInt(this.value);
+            if (isNaN(val)) val = 1;
+            state.randMin = Math.max(1, val);
+            if (state.randMin > state.randMax) state.randMax = state.randMin;
+            $('#fm-rand-max').val(state.randMax);
+            save();
+        });
+        $('#fm-rand-max').val(state.randMax).on('change', function() {
+            let val = parseInt(this.value);
+            if (isNaN(val)) val = 1;
+            state.randMax = Math.max(state.randMin, val);
+            this.value = state.randMax;
+            save();
+        });
+        $('#fm-rand-ensure').prop('checked', state.randEnsureCategory).on('change', function() {
+            state.randEnsureCategory = this.checked;
+            save();
+        });
+        $('#fm-randomize').on('click', function(e) {
+            e.preventDefault();
+            randomizeFetishes();
+        });
+
+        // Фильтры контекста
         $('#fm-min-context').val(state.minContextLength).on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
@@ -486,7 +679,6 @@ jQuery(async () => {
             apply();
             save();
         });
-
         $('#fm-cooldown').val(state.cooldownMessages).on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
@@ -495,18 +687,17 @@ jQuery(async () => {
             apply();
             save();
         });
-
         $('#fm-sexual-hint').prop('checked', state.requireSexualHint).on('change', function() {
             state.requireSexualHint = this.checked;
             apply();
             save();
         });
 
+        // Обработчики фетишей
         $(document).on('click touchend', '.fm-fetish-btn', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
         });
-
         $(document).on('click touchend', '.fm-tag', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
@@ -521,6 +712,7 @@ jQuery(async () => {
             notify('Очищено');
         });
 
+        // Кастомные фетиши
         $('#fm-add-custom').on('click touchend', function(e) {
             e.preventDefault();
             const name = prompt('Название фетиша:');
@@ -532,6 +724,7 @@ jQuery(async () => {
                 id,
                 name: name.trim(),
                 icon: 'fa-solid fa-circle',
+                cat: 'psych',
                 prompt: `[FETISH: ${name.trim()}] ${desc.trim()}`
             });
             save();
@@ -544,7 +737,6 @@ jQuery(async () => {
             const id = $(this).closest('.fm-custom-item').data('id');
             toggle(id);
         });
-
         $(document).on('click touchend', '.fm-custom-del', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -557,17 +749,16 @@ jQuery(async () => {
             notify('Удалён');
         });
 
+        // Drag and drop панели
         const $handle = $('#fm-drag-handle');
         let isDragging = false;
         let offset = { x: 0, y: 0 };
-
         function getCoords(e) {
             if (e.type.startsWith('touch') && e.touches && e.touches[0]) {
                 return { x: e.touches[0].clientX, y: e.touches[0].clientY };
             }
             return { x: e.clientX, y: e.clientY };
         }
-
         $handle.on('mousedown touchstart', function(e) {
             isDragging = true;
             const pos = $panel.position();
@@ -576,21 +767,17 @@ jQuery(async () => {
             offset = { x: coords.x - pos.left, y: coords.y - pos.top };
             e.preventDefault();
         });
-
         $(document).on('mousemove touchmove', function(e) {
             if (!isDragging) return;
             const coords = getCoords(e);
             $panel.css({ top: (coords.y - offset.y) + 'px', left: (coords.x - offset.x) + 'px' });
         });
+        $(document).on('mouseup touchend', function() { isDragging = false; });
 
-        $(document).on('mouseup touchend', function() {
-            isDragging = false;
-        });
-
+        // Drag and drop мини-кнопки
         let isMiniDragging = false;
         let miniOffset = { x: 0, y: 0 };
         let miniMoved = false;
-
         $miniBtn.on('mousedown touchstart', function(e) {
             isMiniDragging = true;
             miniMoved = false;
@@ -602,7 +789,6 @@ jQuery(async () => {
             e.preventDefault();
             e.stopPropagation();
         });
-
         $(document).on('mousemove touchmove', function(e) {
             if (!isMiniDragging) return;
             miniMoved = true;
@@ -611,13 +797,10 @@ jQuery(async () => {
             $miniBtn.css({ top: (coords.y - miniOffset.y) + 'px', left: (coords.x - miniOffset.x) + 'px' });
             e.preventDefault();
         });
-
         $(document).on('mouseup touchend', function() {
             if (isMiniDragging) {
                 isMiniDragging = false;
-                if (miniMoved) {
-                    setTimeout(() => { miniClickAllowed = true; }, 50);
-                }
+                if (miniMoved) setTimeout(() => { miniClickAllowed = true; }, 50);
             }
         });
 
@@ -629,7 +812,7 @@ jQuery(async () => {
             apply();
         });
 
-        console.log('[Fetish Manager] v13 Ready! (with context filter)');
+        console.log('[Fetish Manager] v15 Ready! (fully reorganized + randomizer + new fetishes)');
 
     } catch (error) {
         console.error('[Fetish Manager] Error:', error);

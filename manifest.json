@@ -1,12 +1,12 @@
 {
-  "display_name": "Fetish Manager",
+  "display_name": "Character Moods Fetish Manager",
   "loading_order": 5,
   "requires": [],
   "optional": [],
   "js": "index.js",
   "css": "style.css",
-  "author": "Tane4ka",
-  "version": "1.0.0",
-  "homePage": "https://github.com/delidgi/fetish-manager",
-  "auto_update": false
+  "author": "miatriX",
+  "version": "1.1.0",
+  "homePage": "https://github.com/miatriX456/Character-Behavior-Extension-for-SillyTavern-fetish-.git",
+  "auto_update": true
 }
