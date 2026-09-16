@@ -8,48 +8,18 @@ const extensionName = 'fetish-manager';
 // ============================================================
 const FETISHES = {
     // ==================== ТАБУ И СЮЖЕТНЫЕ РОЛИ (taboo) ====================
-    celibacy_breach: { 
-        name: "Нарушение целибата / Обета", 
-        icon: "fa-solid fa-cross", 
-        cat: "taboo", 
-        prompt: `[FETISH: Celibacy Breach] {{char}} struggles deeply between sacred vows/religious duty and overwhelming sexual desire, eventually giving in to temptation.` 
-    },
-    confession_kink: { 
-        name: "Исповедь (грех и покаяние)", 
-        icon: "fa-solid fa-church", 
-        cat: "taboo", 
-        prompt: `[FETISH: Confession] {{char}} weaves sexual acts with admission of sins, seeking absolution or punishment through intimacy.` 
-    },
-    corrupting_purity: { 
-        name: "Развращение праведника", 
-        icon: "fa-solid fa-angel", 
-        cat: "taboo", 
-        prompt: `[FETISH: Corrupting Purity] {{char}} finds intense erotic pleasure in turning someone innocent, deeply religious, or morally upright into a willing sinner.` 
-    },
-    hypocrisy_kink: { 
-        name: "Двойная жизнь (святоша-грешник)", 
-        icon: "fa-solid fa-mask", 
-        cat: "taboo", 
-        prompt: `[FETISH: Hypocrisy] {{char}} acts strictly moral, righteous, or holy in public, but indulges in intense, unfiltered lust behind closed doors.` 
-    },
-    blackmail: { 
-        name: "Шантаж и Секреты", 
-        icon: "fa-solid fa-user-ninja", 
-        cat: "taboo", 
-        prompt: `[FETISH: Blackmail] Intimacy driven by dangerous secrets, hidden leverage, or compromising information.` 
-    },
-    forbidden_status: { 
-        name: "Запретный статус (учитель/врач/священник)", 
-        icon: "fa-solid fa-ban", 
-        cat: "taboo", 
-        prompt: `[FETISH: Forbidden Status] High sexual tension caused entirely by crossing social, moral, or professional boundaries.` 
-    },
+    celibacy_breach: { name: "Нарушение целибата / Обета", icon: "fa-solid fa-cross", cat: "taboo", prompt: `[FETISH: Celibacy Breach] {{char}} struggles deeply between sacred vows/religious duty and overwhelming sexual desire, eventually giving in to temptation.` },
+    confession_kink: { name: "Исповедь (грех и покаяние)", icon: "fa-solid fa-church", cat: "taboo", prompt: `[FETISH: Confession] {{char}} weaves sexual acts with admission of sins, seeking absolution or punishment through intimacy.` },
+    corrupting_purity: { name: "Развращение праведника", icon: "fa-solid fa-dove", cat: "taboo", prompt: `[FETISH: Corrupting Purity] {{char}} finds intense erotic pleasure in turning someone innocent, deeply religious, or morally upright into a willing sinner.` },
+    hypocrisy_kink: { name: "Двойная жизнь (святоша-грешник)", icon: "fa-solid fa-mask", cat: "taboo", prompt: `[FETISH: Hypocrisy] {{char}} acts strictly moral, righteous, or holy in public, but indulges in intense, unfiltered lust behind closed doors.` },
+    blackmail: { name: "Шантаж и Секреты", icon: "fa-solid fa-user-ninja", cat: "taboo", prompt: `[FETISH: Blackmail] Intimacy driven by dangerous secrets, hidden leverage, or compromising information.` },
+    forbidden_status: { name: "Запретный статус (учитель/врач/священник)", icon: "fa-solid fa-ban", cat: "taboo", prompt: `[FETISH: Forbidden Status] High sexual tension caused entirely by crossing social, moral, or professional boundaries.` },
 
     // ==================== ВЛАСТЬ И КОНТРОЛЬ (power) ====================
     bdsm: { name: "БДСМ", icon: "fa-solid fa-link", cat: "power", prompt: `[FETISH: BDSM] {{char}} has interest in BDSM.` },
     domination: { name: "Доминация", icon: "fa-solid fa-crown", cat: "power", prompt: `[FETISH: Domination] {{char}} takes control.` },
     masochism: { name: "Мазохизм", icon: "fa-solid fa-fire", cat: "power", prompt: `[FETISH: Masochism] {{char}} enjoys pain.` },
-    bondage: { name: "Бондаж", icon: "fa-solid fa-hands", cat: "power", prompt: `[FETISH: Bondage] {{char}} enjoys restraints.` },
+    bondage: { name: "Бондаж", icon: "fa-solid fa-hands-bound", cat: "power", prompt: `[FETISH: Bondage] {{char}} enjoys restraints.` },
     brat_taming: { name: "Приручение (наказание за непослушание)", icon: "fa-solid fa-bolt", cat: "power", prompt: `[FETISH: Brat Taming] {{char}} provokes punishment.` },
     freeuse: { name: "Freeuse (доступность 24/7)", icon: "fa-solid fa-lock-open", cat: "power", prompt: `[FETISH: Free Use] {{char}} available anytime.` },
     cuckold: { name: "Куколд", icon: "fa-solid fa-people-arrows", cat: "power", prompt: `[FETISH: Cuckold] {{char}} gets aroused by watching or knowing their partner has sex with someone else.` },
@@ -65,7 +35,7 @@ const FETISHES = {
     money: { name: "Фин.Доминирование (траты как секс)", icon: "fa-solid fa-money-bill-wave", cat: "psych", prompt: `[FETISH: Financial dominance] {{char}} derives sexual pleasure from financially dominating their partner (expensive gifts, financial reliance).` },
     daddy: { name: "Папочка", icon: "fa-solid fa-user-tie", cat: "psych", prompt: `[FETISH: Daddy] {{char}} enjoys daddy role.` },
     lactation: { name: "Лактация", icon: "fa-solid fa-droplet", cat: "psych", prompt: `[FETISH: Lactation] {{char}} has a lactation fetish, focused on breast milk and nursing.` },
-    pregnancy: { name: "Беременность", icon: "fa-solid fa-person", cat: "psych", prompt: `[FETISH: Pregnancy] {{char}} has a pregnancy fetish.` },
+    pregnancy: { name: "Беременность", icon: "fa-solid fa-person-pregnant", cat: "psych", prompt: `[FETISH: Pregnancy] {{char}} has a pregnancy fetish.` },
     corruption: { name: "Развращение", icon: "fa-solid fa-apple-whole", cat: "psych", prompt: `[FETISH: Corruption] {{char}} corrupts innocence.` },
     abasiophilia: { name: "Абазиофилия (влечение к гипсам/костылям)", icon: "fa-solid fa-wheelchair", cat: "psych", prompt: `[FETISH: Abasiophilia] {{char}} is attracted to people with physical disabilities or orthopedic devices.` },
     ahegao: { name: "Ахэгао (выражение экстаза)", icon: "fa-solid fa-face-surprise", cat: "psych", prompt: `[FETISH: Ahegao] {{char}} makes an exaggerated orgasmic face (rolled-back eyes, tongue out).` },
@@ -135,7 +105,7 @@ const FETISHES = {
     // ==================== АНАТОМИЧЕСКИЕ (body) ====================
     anal: { name: "Анальный секс", icon: "fa-solid fa-circle", cat: "body", prompt: `[FETISH: Anal] {{char}} enjoys anal.` },
     impact: { name: "Порка / Шлепки", icon: "fa-solid fa-hand", cat: "body", prompt: `[FETISH: Impact] {{char}} enjoys spanking.` },
-    groping: { name: "Навязчивое лапанье", icon: "fa-solid fa-hands", cat: "body", prompt: `[FETISH: Groping] {{char}} touches constantly.` },
+    groping: { name: "Навязчивое лапанье", icon: "fa-solid fa-hand", cat: "body", prompt: `[FETISH: Groping] {{char}} touches constantly.` },
     breasts: { name: "Грудь (фиксация)", icon: "fa-solid fa-circle", cat: "body", prompt: `[FETISH: Breasts] {{char}} is obsessed with breasts.` },
     medical_fetish: { name: "Медицинские осмотры", icon: "fa-solid fa-stethoscope", cat: "body", prompt: `[FETISH: Medical] {{char}} is aroused by medical procedures, uniforms, exams.` },
     anal_training: { name: "Anal training (растяжение)", icon: "fa-solid fa-bullseye", cat: "body", prompt: `[FETISH: Anal Training] {{char}} enjoys gradually stretching the anus.` },
@@ -206,8 +176,8 @@ const FETISHES = {
     breath_control: { name: "Breath control (удушение)", icon: "fa-solid fa-lungs", cat: "sense", prompt: `[FETISH: Breath Control] {{char}} enjoys temporary asphyxiation.` },
     mummification: { name: "Мумификация (плотное пеленание)", icon: "fa-solid fa-bandage", cat: "sense", prompt: `[FETISH: Mummification] {{char}} is aroused by being tightly wrapped like a mummy.` },
     sensory_deprivation: { name: "Сенсорная депривация", icon: "fa-solid fa-volume-xmark", cat: "sense", prompt: `[FETISH: Sensory Deprivation] {{char}} enjoys being deprived of sight, hearing, or movement.` },
-    wax_play: { name: "Wax play (горячий воск)", icon: "fa-solid fa-candle", cat: "sense", prompt: `[FETISH: Wax Play] {{char}} is aroused by dripping melted wax onto skin.` },
-    looner: { name: "Лунеры (воздушные шары)", icon: "fa-solid fa-balloon", cat: "sense", prompt: `[FETISH: Looner] {{char}} has a fetish for balloons.` },
+    wax_play: { name: "Wax play (горячий воск)", icon: "fa-solid fa-fire-flame-curved", cat: "sense", prompt: `[FETISH: Wax Play] {{char}} is aroused by dripping melted wax onto skin.` },
+    looner: { name: "Лунеры (воздушные шары)", icon: "fa-solid fa-circle", cat: "sense", prompt: `[FETISH: Looner] {{char}} has a fetish for balloons.` },
     shibari: { name: "Шибари (японские узлы)", icon: "fa-solid fa-link", cat: "sense", prompt: `[FETISH: Shibari] {{char}} is aroused by intricate rope bondage.` },
     furry: { name: "Фурри", icon: "fa-solid fa-paw", cat: "sense", prompt: `[FETISH: Furry] {{char}} is aroused by animal costumes or anthropomorphic roleplay.` },
 
@@ -240,7 +210,7 @@ const CATEGORIES = {
 };
 
 // ============================================================
-// ИНИЦИАЛИЗАЦИЯ И СОХРАНЕНИЕ В SILLYTAVERN
+// ИНИЦИАЛИЗАЦИЯ И СОХРАНЕНИЕ
 // ============================================================
 const defaultState = {
     enabled: true,
@@ -258,16 +228,55 @@ const defaultState = {
     randEnsureCategory: false
 };
 
-extension_settings[extensionName] = extension_settings[extensionName] || defaultState;
+// 🔧 ФИКС: мержим сохранённые настройки с дефолтом,
+// чтобы новые поля не терялись при обновлениях.
+extension_settings[extensionName] = Object.assign(
+    {},
+    defaultState,
+    extension_settings[extensionName] || {}
+);
 let state = extension_settings[extensionName];
+
+// 🔧 ФИКС: санитизация на случай битых/старых значений
+function sanitizeState() {
+    if (typeof state.enabled !== 'boolean') state.enabled = true;
+    if (!Array.isArray(state.active)) state.active = [];
+    if (!Array.isArray(state.custom)) state.custom = [];
+    if (typeof state.showFloating !== 'boolean') state.showFloating = true;
+    if (typeof state.chance !== 'number' || isNaN(state.chance)) state.chance = 70;
+    if (typeof state.intensity !== 'string') state.intensity = 'medium';
+    if (typeof state.minContextLength !== 'number' || isNaN(state.minContextLength)) state.minContextLength = 0;
+    if (typeof state.cooldownMessages !== 'number' || isNaN(state.cooldownMessages)) state.cooldownMessages = 0;
+    if (typeof state.requireSexualHint !== 'boolean') state.requireSexualHint = false;
+    if (typeof state.randMin !== 'number' || isNaN(state.randMin) || state.randMin < 1) state.randMin = 1;
+    if (typeof state.randMax !== 'number' || isNaN(state.randMax) || state.randMax < 1) state.randMax = 5;
+    if (state.randMin > state.randMax) state.randMax = state.randMin;
+    if (typeof state.randEnsureCategory !== 'boolean') state.randEnsureCategory = false;
+}
+sanitizeState();
 
 function save() {
     extension_settings[extensionName] = state;
     saveSettingsDebounced();
 }
 
+// 🔧 ФИКС: безопасное получение контекста ST
+function getCtx() {
+    try {
+        if (window.SillyTavern && typeof window.SillyTavern.getContext === 'function') {
+            return window.SillyTavern.getContext();
+        }
+        if (typeof SillyTavern !== 'undefined' && typeof SillyTavern.getContext === 'function') {
+            return SillyTavern.getContext();
+        }
+    } catch (e) {
+        console.warn('[Fetish Manager] getContext error:', e);
+    }
+    return null;
+}
+
 // ============================================================
-// ВПОМОГАТЕЛЬНЫЕ ФУНКЦИИ РАНДОМИЗАТОРА
+// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ РАНДОМИЗАТОРА
 // ============================================================
 function getAllFetishKeys() {
     let keys = Object.keys(FETISHES);
@@ -283,6 +292,9 @@ function getFetishCategory(key) {
 }
 
 function randomSelectFetishes(minCount, maxCount, ensurePerCategory) {
+    minCount = Math.max(1, Number(minCount) || 1);
+    maxCount = Math.max(minCount, Number(maxCount) || minCount);
+
     let allKeys = getAllFetishKeys();
     if (allKeys.length === 0) return [];
 
@@ -336,19 +348,19 @@ function randomizeFetishes() {
 // ПРОВЕРКИ КОНТЕКСТА
 // ============================================================
 function getChatHistoryLength() {
-    const ctx = window.getContext();
+    const ctx = getCtx();
     if (!ctx || !ctx.chat || !ctx.chat.length) return 0;
     return ctx.chat.reduce((sum, msg) => sum + (msg.mes?.length || 0), 0);
 }
 
 function getLastMessageId() {
-    const ctx = window.getContext();
+    const ctx = getCtx();
     if (!ctx || !ctx.chat) return 0;
     return ctx.chat.length - 1;
 }
 
 function hasUserSexualHint() {
-    const ctx = window.getContext();
+    const ctx = getCtx();
     if (!ctx || !ctx.chat || ctx.chat.length === 0) return false;
     let lastUserMsg = null;
     for (let i = ctx.chat.length - 1; i >= 0; i--) {
@@ -371,7 +383,7 @@ function hasUserSexualHint() {
 
 function isCooldownActive() {
     if (state.cooldownMessages <= 0) return false;
-    if (state.lastTriggerMessageId === null) return false;
+    if (state.lastTriggerMessageId === null || state.lastTriggerMessageId === undefined) return false;
     const currentId = getLastMessageId();
     const diff = currentId - state.lastTriggerMessageId;
     return diff < state.cooldownMessages;
@@ -419,7 +431,7 @@ function buildPrompt() {
     return `[OOC: FETISH SYSTEM — STRICT COMPLIANCE REQUIRED]
 Roll: ${roll}/100 (threshold: ${state.chance}%)
 Result: ${triggered ? `TRIGGERED → apply "${randomFetish?.name || randomFetishKey}"` : `NOT TRIGGERED → write vanilla scene`}
-Intensity: ${state.intensity} (${intensityMap[state.intensity]})
+Intensity: ${state.intensity} (${intensityMap[state.intensity] || intensityMap.medium})
 
 Target Fetish:
 ${targetPrompt}
@@ -438,8 +450,12 @@ ${triggered
 }
 
 function apply() {
-    const prompt = buildPrompt();
-    setExtensionPrompt(extensionName, prompt, extension_prompt_types.IN_CHAT, 0);
+    try {
+        const prompt = buildPrompt();
+        setExtensionPrompt(extensionName, prompt, extension_prompt_types.IN_CHAT, 0);
+    } catch (e) {
+        console.error('[Fetish Manager] apply() error:', e);
+    }
 }
 
 function notify(msg) {
@@ -609,7 +625,7 @@ const panelHtml = `
     </div>
 </div>
 
-<div id="fm-mini-btn" class="fm-mini-btn"><i class="fa-solid fa-fire"></i></div>
+<div id="fm-mini-btn" class="fm-mini-btn" style="z-index: 99999;"><i class="fa-solid fa-fire"></i></div>
 `;
 
 // ============================================================
@@ -617,49 +633,59 @@ const panelHtml = `
 // ============================================================
 jQuery(async () => {
     try {
-        $('body').append(panelHtml);
-        $('#extensions_settings2').append(extSettingsHtml);
-        $('#fm-categories').html(buildCategoriesHtml());
+        // Вставляем HTML только один раз (защита от двойной инициализации)
+        if ($('#fm-panel').length === 0) {
+            $('body').append(panelHtml);
+        }
+        if ($('#fm-ext-settings').length === 0 && $('#extensions_settings2').length) {
+            $('#extensions_settings2').append(extSettingsHtml);
+        }
+        if ($('#fm-categories').children().length === 0) {
+            $('#fm-categories').html(buildCategoriesHtml());
+        }
 
         const $panel = $('#fm-panel');
         const $miniBtn = $('#fm-mini-btn');
 
         function applyFloatVisibility() {
-            if ($miniBtn.length) $miniBtn.toggle(!!state.showFloating);
+            if ($miniBtn.length) $miniBtn.toggle(state.showFloating !== false);
         }
-        $('#fm-ext-show-float').prop('checked', state.showFloating).on('change', function() {
-            state.showFloating = this.checked;
-            applyFloatVisibility();
-            save();
-        });
+
+        $('#fm-ext-show-float')
+            .prop('checked', state.showFloating !== false)
+            .off('change').on('change', function() {
+                state.showFloating = this.checked;
+                applyFloatVisibility();
+                save();
+            });
         applyFloatVisibility();
 
-        $('#fm-ext-open').on('click', function(e) {
+        $('#fm-ext-open').off('click').on('click', function(e) {
             e.preventDefault();
             $panel.removeClass('fm-hidden');
         });
 
         let miniClickAllowed = true;
-        $miniBtn.on('click', function(e) {
+        $miniBtn.off('click').on('click', function(e) {
             if (!miniClickAllowed) return;
             e.preventDefault();
             e.stopPropagation();
             $panel.toggleClass('fm-hidden');
         });
 
-        $('#fm-minimize').on('click', function(e) {
+        $('#fm-minimize').off('click').on('click', function(e) {
             e.preventDefault();
             $panel.addClass('fm-hidden');
         });
 
         // Настройки
-        $('#fm-enabled').prop('checked', state.enabled).on('change', function() {
+        $('#fm-enabled').prop('checked', state.enabled).off('change').on('change', function() {
             state.enabled = this.checked;
             apply();
             save();
         });
 
-        $('#fm-intensity').val(state.intensity).on('change', function() {
+        $('#fm-intensity').val(state.intensity).off('change').on('change', function() {
             state.intensity = this.value;
             apply();
             save();
@@ -667,7 +693,7 @@ jQuery(async () => {
 
         $('#fm-chance').val(state.chance);
         $('#fm-chance-val').text(state.chance);
-        $('#fm-chance').on('input', function() {
+        $('#fm-chance').off('input').on('input', function() {
             state.chance = parseInt(this.value);
             $('#fm-chance-val').text(this.value);
             apply();
@@ -675,7 +701,7 @@ jQuery(async () => {
         });
 
         // Рандомизатор
-        $('#fm-rand-min').val(state.randMin).on('change', function() {
+        $('#fm-rand-min').val(state.randMin).off('change').on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 1;
             state.randMin = Math.max(1, val);
@@ -683,31 +709,31 @@ jQuery(async () => {
             $('#fm-rand-max').val(state.randMax);
             save();
         });
-        $('#fm-rand-max').val(state.randMax).on('change', function() {
+        $('#fm-rand-max').val(state.randMax).off('change').on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 1;
             state.randMax = Math.max(state.randMin, val);
             this.value = state.randMax;
             save();
         });
-        $('#fm-rand-ensure').prop('checked', state.randEnsureCategory).on('change', function() {
+        $('#fm-rand-ensure').prop('checked', state.randEnsureCategory).off('change').on('change', function() {
             state.randEnsureCategory = this.checked;
             save();
         });
-        $('#fm-randomize').on('click', function(e) {
+        $('#fm-randomize').off('click').on('click', function(e) {
             e.preventDefault();
             randomizeFetishes();
         });
 
         // Фильтры
-        $('#fm-min-context').val(state.minContextLength).on('change', function() {
+        $('#fm-min-context').val(state.minContextLength).off('change').on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
             state.minContextLength = val;
             apply();
             save();
         });
-        $('#fm-cooldown').val(state.cooldownMessages).on('change', function() {
+        $('#fm-cooldown').val(state.cooldownMessages).off('change').on('change', function() {
             let val = parseInt(this.value);
             if (isNaN(val)) val = 0;
             state.cooldownMessages = val;
@@ -715,23 +741,23 @@ jQuery(async () => {
             apply();
             save();
         });
-        $('#fm-sexual-hint').prop('checked', state.requireSexualHint).on('change', function() {
+        $('#fm-sexual-hint').prop('checked', state.requireSexualHint).off('change').on('change', function() {
             state.requireSexualHint = this.checked;
             apply();
             save();
         });
 
         // Обработчики кликов
-        $(document).on('click', '.fm-fetish-btn', function(e) {
+        $(document).off('click.fmFetish').on('click.fmFetish', '.fm-fetish-btn', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
         });
-        $(document).on('click', '.fm-tag', function(e) {
+        $(document).off('click.fmTag').on('click.fmTag', '.fm-tag', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
         });
 
-        $('#fm-clear').on('click', function(e) {
+        $('#fm-clear').off('click').on('click', function(e) {
             e.preventDefault();
             state.active = [];
             updateUI();
@@ -741,7 +767,7 @@ jQuery(async () => {
         });
 
         // Кастомные элементы
-        $('#fm-add-custom').on('click', function(e) {
+        $('#fm-add-custom').off('click').on('click', function(e) {
             e.preventDefault();
             const name = prompt('Название фетиша:');
             if (!name || !name.trim()) return;
@@ -760,12 +786,12 @@ jQuery(async () => {
             notify(`+ ${name.trim()}`);
         });
 
-        $(document).on('click', '.fm-custom-name', function(e) {
+        $(document).off('click.fmCustomName').on('click.fmCustomName', '.fm-custom-name', function(e) {
             e.preventDefault();
             const id = $(this).closest('.fm-custom-item').data('id');
             toggle(id);
         });
-        $(document).on('click', '.fm-custom-del', function(e) {
+        $(document).off('click.fmCustomDel').on('click.fmCustomDel', '.fm-custom-del', function(e) {
             e.preventDefault();
             e.stopPropagation();
             const id = $(this).data('id');
@@ -790,14 +816,14 @@ jQuery(async () => {
             }
             return { x: e.clientX, y: e.clientY };
         }
-        $handle.on('mousedown touchstart', function(e) {
+        $handle.off('mousedown.fm touchstart.fm').on('mousedown.fm touchstart.fm', function(e) {
             isDragging = true;
             const pos = $panel.position();
             $panel.css({ top: pos.top + 'px', left: pos.left + 'px', right: 'auto', bottom: 'auto' });
             const coords = getCoords(e);
             offset = { x: coords.x - pos.left, y: coords.y - pos.top };
         });
-        $(document).on('mousemove touchmove', function(e) {
+        $(document).off('mousemove.fmPanel touchmove.fmPanel').on('mousemove.fmPanel touchmove.fmPanel', function(e) {
             if (!isDragging) return;
             const coords = getCoords(e);
             let newX = coords.x - offset.x;
@@ -813,13 +839,15 @@ jQuery(async () => {
 
             $panel.css({ top: newY + 'px', left: newX + 'px' });
         });
-        $(document).on('mouseup touchend', function() { isDragging = false; });
+        $(document).off('mouseup.fmPanel touchend.fmPanel').on('mouseup.fmPanel touchend.fmPanel', function() {
+            isDragging = false;
+        });
 
         // Drag and Drop мини-кнопки
         let isMiniDragging = false;
         let miniOffset = { x: 0, y: 0 };
         let miniMoved = false;
-        $miniBtn.on('mousedown touchstart', function(e) {
+        $miniBtn.off('mousedown.fm touchstart.fm').on('mousedown.fm touchstart.fm', function(e) {
             isMiniDragging = true;
             miniMoved = false;
             miniClickAllowed = true;
@@ -828,7 +856,7 @@ jQuery(async () => {
             const coords = getCoords(e);
             miniOffset = { x: coords.x - pos.left, y: coords.y - pos.top };
         });
-        $(document).on('mousemove touchmove', function(e) {
+        $(document).off('mousemove.fmMini touchmove.fmMini').on('mousemove.fmMini touchmove.fmMini', function(e) {
             if (!isMiniDragging) return;
             const coords = getCoords(e);
             let newX = coords.x - miniOffset.x;
@@ -849,7 +877,7 @@ jQuery(async () => {
 
             $miniBtn.css({ top: newY + 'px', left: newX + 'px' });
         });
-        $(document).on('mouseup touchend', function() {
+        $(document).off('mouseup.fmMini touchend.fmMini').on('mouseup.fmMini touchend.fmMini', function() {
             if (isMiniDragging) {
                 isMiniDragging = false;
                 if (miniMoved) setTimeout(() => { miniClickAllowed = true; }, 100);
@@ -859,13 +887,15 @@ jQuery(async () => {
         updateUI();
         apply();
 
-        eventSource.on(event_types.MESSAGE_SENT, () => {
-            apply();
-        });
+        if (eventSource && event_types && event_types.MESSAGE_SENT) {
+            eventSource.on(event_types.MESSAGE_SENT, () => {
+                apply();
+            });
+        }
 
-        console.log('[Fetish Manager] Updated with Taboo category and clear descriptions!');
+        console.log('[Fetish Manager] Initialized. State:', JSON.parse(JSON.stringify(state)));
 
     } catch (error) {
-        console.error('[Fetish Manager] Error:', error);
+        console.error('[Fetish Manager] Initialization error:', error);
     }
 });
