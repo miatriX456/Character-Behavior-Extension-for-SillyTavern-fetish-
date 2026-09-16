@@ -1,7 +1,46 @@
-import { setExtensionPrompt, extension_prompt_types, eventSource, event_types } from '../../../../script.js';
-import { extension_settings, saveSettingsDebounced } from '../../../extensions.js';
+// ============================================================
+// FETISH MANAGER — БЕЗ ИМПОРТОВ, ЧЕРЕЗ КОНТЕКСТ ST
+// ============================================================
+// Работает на ST 1.10+ и выше, не зависит от путей к script.js
+// ============================================================
 
 const extensionName = 'fetish-manager';
+
+// ── Получаем всё через контекст ──────────────────────────────
+// Делаем это внутри jQuery-колбэка, потому что на момент парсинга
+// модуля window.SillyTavern может быть ещё не готов.
+let setExtensionPrompt = null;
+let extension_prompt_types = null;
+let eventSource = null;
+let event_types = null;
+let extension_settings = null;
+let saveSettingsDebounced = null;
+
+function initContext() {
+    const ctx = window.SillyTavern?.getContext?.();
+    if (!ctx) {
+        console.error('[Fetish Manager] Не удалось получить контекст SillyTavern');
+        return false;
+    }
+
+    setExtensionPrompt = ctx.setExtensionPrompt;
+    extension_prompt_types = ctx.extensionPromptTypes || ctx.extension_prompt_types;
+    eventSource = ctx.eventSource;
+    event_types = ctx.eventTypes || ctx.event_types;
+    extension_settings = ctx.extensionSettings;
+    saveSettingsDebounced = ctx.saveSettingsDebounced;
+
+    console.log('[Fetish Manager] Context:',
+        'setExtensionPrompt:', !!setExtensionPrompt,
+        'extension_prompt_types:', !!extension_prompt_types,
+        'eventSource:', !!eventSource,
+        'event_types:', !!event_types,
+        'extension_settings:', !!extension_settings,
+        'saveSettingsDebounced:', !!saveSettingsDebounced
+    );
+
+    return true;
+}
 
 // ============================================================
 // БАЗА ФЕТИШЕЙ
@@ -210,7 +249,7 @@ const CATEGORIES = {
 };
 
 // ============================================================
-// ИНИЦИАЛИЗАЦИЯ И СОХРАНЕНИЕ
+// СОСТОЯНИЕ
 // ============================================================
 const defaultState = {
     enabled: true,
@@ -228,17 +267,22 @@ const defaultState = {
     randEnsureCategory: false
 };
 
-// 🔧 ФИКС: мержим сохранённые настройки с дефолтом,
-// чтобы новые поля не терялись при обновлениях.
-extension_settings[extensionName] = Object.assign(
-    {},
-    defaultState,
-    extension_settings[extensionName] || {}
-);
-let state = extension_settings[extensionName];
+let state = null;
 
-// 🔧 ФИКС: санитизация на случай битых/старых значений
-function sanitizeState() {
+function loadState() {
+    if (!extension_settings) {
+        console.error('[Fetish Manager] extension_settings недоступен');
+        state = { ...defaultState };
+        return;
+    }
+    extension_settings[extensionName] = Object.assign(
+        {},
+        defaultState,
+        extension_settings[extensionName] || {}
+    );
+    state = extension_settings[extensionName];
+
+    // Санитизация
     if (typeof state.enabled !== 'boolean') state.enabled = true;
     if (!Array.isArray(state.active)) state.active = [];
     if (!Array.isArray(state.custom)) state.custom = [];
@@ -253,30 +297,18 @@ function sanitizeState() {
     if (state.randMin > state.randMax) state.randMax = state.randMin;
     if (typeof state.randEnsureCategory !== 'boolean') state.randEnsureCategory = false;
 }
-sanitizeState();
 
 function save() {
-    extension_settings[extensionName] = state;
-    saveSettingsDebounced();
-}
-
-// 🔧 ФИКС: безопасное получение контекста ST
-function getCtx() {
-    try {
-        if (window.SillyTavern && typeof window.SillyTavern.getContext === 'function') {
-            return window.SillyTavern.getContext();
-        }
-        if (typeof SillyTavern !== 'undefined' && typeof SillyTavern.getContext === 'function') {
-            return SillyTavern.getContext();
-        }
-    } catch (e) {
-        console.warn('[Fetish Manager] getContext error:', e);
+    if (extension_settings) {
+        extension_settings[extensionName] = state;
     }
-    return null;
+    if (typeof saveSettingsDebounced === 'function') {
+        saveSettingsDebounced();
+    }
 }
 
 // ============================================================
-// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ РАНДОМИЗАТОРА
+// РАНДОМИЗАТОР
 // ============================================================
 function getAllFetishKeys() {
     let keys = Object.keys(FETISHES);
@@ -345,8 +377,16 @@ function randomizeFetishes() {
 }
 
 // ============================================================
-// ПРОВЕРКИ КОНТЕКСТА
+// КОНТЕКСТ
 // ============================================================
+function getCtx() {
+    try {
+        return window.SillyTavern?.getContext?.() || null;
+    } catch (e) {
+        return null;
+    }
+}
+
 function getChatHistoryLength() {
     const ctx = getCtx();
     if (!ctx || !ctx.chat || !ctx.chat.length) return 0;
@@ -390,23 +430,17 @@ function isCooldownActive() {
 }
 
 // ============================================================
-// ПРОМПТ И СИСТЕМА
+// ПРОМПТ
 // ============================================================
 function buildPrompt() {
     if (!state.enabled || !state.active.length) return '';
 
     if (state.minContextLength > 0) {
         const historyLen = getChatHistoryLength();
-        if (historyLen < state.minContextLength) {
-            return '';
-        }
+        if (historyLen < state.minContextLength) return '';
     }
-    if (isCooldownActive()) {
-        return '';
-    }
-    if (state.requireSexualHint && !hasUserSexualHint()) {
-        return '';
-    }
+    if (isCooldownActive()) return '';
+    if (state.requireSexualHint && !hasUserSexualHint()) return '';
 
     const intensityMap = {
         low: 'very subtle hints, barely noticeable',
@@ -421,8 +455,7 @@ function buildPrompt() {
     const randomFetish = FETISHES[randomFetishKey] || state.custom.find(f => f.id === randomFetishKey);
 
     if (triggered && state.cooldownMessages > 0) {
-        const currentId = getLastMessageId();
-        state.lastTriggerMessageId = currentId;
+        state.lastTriggerMessageId = getLastMessageId();
         save();
     }
 
@@ -451,6 +484,10 @@ ${triggered
 
 function apply() {
     try {
+        if (typeof setExtensionPrompt !== 'function' || !extension_prompt_types) {
+            console.warn('[Fetish Manager] setExtensionPrompt недоступен');
+            return;
+        }
         const prompt = buildPrompt();
         setExtensionPrompt(extensionName, prompt, extension_prompt_types.IN_CHAT, 0);
     } catch (e) {
@@ -468,6 +505,9 @@ function faIcon(cls, extra = '') {
     return `<i class="${cls}${extra ? ' ' + extra : ''}"></i>`;
 }
 
+// ============================================================
+// UI
+// ============================================================
 function updateUI() {
     $('.fm-fetish-btn').each(function() {
         $(this).toggleClass('fm-active', state.active.includes($(this).data('key')));
@@ -533,7 +573,7 @@ function buildCategoriesHtml() {
 }
 
 // ============================================================
-// HTML ИНТЕРФЕЙСА
+// HTML
 // ============================================================
 const extSettingsHtml = `
 <div id="fm-ext-settings" class="fm-ext-block">
@@ -629,16 +669,35 @@ const panelHtml = `
 `;
 
 // ============================================================
-// ЗАПУСК И ИНИЦИАЛИЗАЦИЯ
+// ИНИЦИАЛИЗАЦИЯ
 // ============================================================
 jQuery(async () => {
+    console.log('[Fetish Manager] jQuery callback fired');
+
     try {
-        // Вставляем HTML только один раз (защита от двойной инициализации)
+        // 1. Получаем контекст
+        if (!initContext()) {
+            console.error('[Fetish Manager] Контекст ST недоступен — выходим');
+            return;
+        }
+
+        // 2. Загружаем состояние
+        loadState();
+        console.log('[Fetish Manager] state loaded:', JSON.parse(JSON.stringify(state)));
+
+        // 3. Вставляем HTML
         if ($('#fm-panel').length === 0) {
             $('body').append(panelHtml);
+            console.log('[Fetish Manager] panel appended');
         }
-        if ($('#fm-ext-settings').length === 0 && $('#extensions_settings2').length) {
-            $('#extensions_settings2').append(extSettingsHtml);
+        if ($('#fm-ext-settings').length === 0) {
+            const $target = $('#extensions_settings2');
+            if ($target.length) {
+                $target.append(extSettingsHtml);
+                console.log('[Fetish Manager] ext settings appended');
+            } else {
+                console.warn('[Fetish Manager] #extensions_settings2 не найден!');
+            }
         }
         if ($('#fm-categories').children().length === 0) {
             $('#fm-categories').html(buildCategoriesHtml());
@@ -747,7 +806,7 @@ jQuery(async () => {
             save();
         });
 
-        // Обработчики кликов
+        // Клики
         $(document).off('click.fmFetish').on('click.fmFetish', '.fm-fetish-btn', function(e) {
             e.preventDefault();
             toggle($(this).data('key'));
@@ -766,7 +825,7 @@ jQuery(async () => {
             notify('Очищено');
         });
 
-        // Кастомные элементы
+        // Кастомные
         $('#fm-add-custom').off('click').on('click', function(e) {
             e.preventDefault();
             const name = prompt('Название фетиша:');
@@ -803,7 +862,7 @@ jQuery(async () => {
             notify('Удалён');
         });
 
-        // Drag and Drop главной панели
+        // Drag панели
         const $handle = $('#fm-drag-handle');
         let isDragging = false;
         let offset = { x: 0, y: 0 };
@@ -843,7 +902,7 @@ jQuery(async () => {
             isDragging = false;
         });
 
-        // Drag and Drop мини-кнопки
+        // Drag кнопки
         let isMiniDragging = false;
         let miniOffset = { x: 0, y: 0 };
         let miniMoved = false;
@@ -891,11 +950,13 @@ jQuery(async () => {
             eventSource.on(event_types.MESSAGE_SENT, () => {
                 apply();
             });
+        } else {
+            console.warn('[Fetish Manager] MESSAGE_SENT не подписан (eventSource/event_types пусты)');
         }
 
-        console.log('[Fetish Manager] Initialized. State:', JSON.parse(JSON.stringify(state)));
+        console.log('[Fetish Manager] ✅ Инициализация завершена успешно');
 
     } catch (error) {
-        console.error('[Fetish Manager] Initialization error:', error);
+        console.error('[Fetish Manager] ❌ Ошибка инициализации:', error);
     }
 });
